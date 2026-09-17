@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apprendre à lire l'arabe — Cours en 10 pages</title>
+<meta name="description" content="Cours complet pour apprendre à lire l'arabe en 10 pages numérotées. Téléchargeable en PDF.">
+
+<!-- Bibliothèque PDF (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+  :root{
+    --bg:#0f172a;
+    --bg-alt:#1e293b;
+    --card:#1e293b;
+    --card-hover:#273449;
+    --text:#e2e8f0;
+    --text-muted:#94a3b8;
+    --accent:#10b981;
+    --accent-2:#14b8a6;
+    --gold:#f59e0b;
+    --red:#ef4444;
+    --border:#334155;
+    --radius:14px;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --font:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+    --font-ar:'Amiri','Traditional Arabic','Scheherazade New',serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.75;
+    font-size:16px;
+  }
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{color:var(--accent-2);}
+
+  /* HEADER */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(15,23,42,.95);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    max-width:1100px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 20px;gap:14px;flex-wrap:wrap;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-weight:700;font-size:1.05rem;
+  }
+  .logo .ar{font-family:var(--font-ar);font-size:1.5rem;color:var(--accent);line-height:1;}
+  .progress-wrap{
+    flex:1;max-width:280px;
+    background:var(--bg-alt);border:1px solid var(--border);
+    border-radius:20px;height:8px;overflow:hidden;
+  }
+  .progress-bar{
+    height:100%;width:10%;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    transition:width .4s ease;
+  }
+  .page-indicator{
+    font-size:.85rem;color:var(--text-muted);
+    font-weight:600;white-space:nowrap;
+  }
+  .btn-pdf{
+    background:linear-gradient(135deg,var(--gold),#d97706);
+    color:#0f172a;border:none;border-radius:10px;
+    padding:10px 18px;font-size:.9rem;font-weight:700;
+    cursor:pointer;font-family:var(--font);
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .2s,opacity .2s;
+    white-space:nowrap;
+  }
+  .btn-pdf:hover{transform:translateY(-2px);}
+  .btn-pdf:disabled{opacity:.6;cursor:wait;}
+  .btn-pdf .icon{font-size:1.1rem;}
+
+  /* CONTAINER */
+  .container{max-width:900px;margin:0 auto;padding:30px 20px 60px;}
+
+  /* PAGE */
+  .page{
+    display:none;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:36px 34px;
+    box-shadow:var(--shadow);
+    animation:fadeIn .4s ease;
+  }
+  .page.active{display:block;}
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(15px);}
+    to{opacity:1;transform:none;}
+  }
+  .page-header{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:22px;padding-bottom:16px;
+    border-bottom:2px solid var(--border);
+    flex-wrap:wrap;gap:12px;
+  }
+  .page-num{
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#0f172a;font-weight:800;
+    padding:6px 16px;border-radius:20px;
+    font-size:.85rem;letter-spacing:.5px;
+  }
+  .page-title{
+    font-size:clamp(1.3rem,3vw,1.7rem);
+    font-weight:800;
+    color:var(--text);
+    flex:1;
+    text-align:right;
+  }
+  .page h2{
+    font-size:1.25rem;
+    margin:26px 0 12px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:10px;
+  }
+  .page h2::before{
+    content:'◆';color:var(--gold);font-size:.9rem;
+  }
+  .page p{color:var(--text);margin-bottom:14px;}
+  .page ul{margin:12px 0 18px 22px;}
+  .page ul li{color:var(--text-muted);margin-bottom:8px;}
+  .page strong{color:var(--gold);}
+
+  /* ARABIC BOX */
+  .ar-box{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px;
+    margin:18px 0;
+    text-align:center;
+  }
+  .ar-box .ar{
+    font-family:var(--font-ar);
+    font-size:clamp(2rem,6vw,3rem);
+    color:var(--accent);
+    line-height:1.6;
+    direction:rtl;
+  }
+  .ar-box .translit{
+    color:var(--text-muted);
+    font-size:.9rem;
+    margin-top:10px;
+    font-style:italic;
+  }
+  .ar-box .fr{
+    color:var(--text);
+    font-size:.95rem;
+    margin-top:6px;
+  }
+
+  /* LETTER GRID */
+  .letters{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+    gap:12px;
+    margin:20px 0;
+  }
+  .letter{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 8px;
+    text-align:center;
+    transition:transform .2s,border-color .2s;
+  }
+  .letter:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent);
+    background:var(--card-hover);
+  }
+  .letter .ar{
+    font-family:var(--font-ar);
+    font-size:2rem;
+    color:var(--accent);
+    display:block;
+    line-height:1.2;
+  }
+  .letter .name{
+    font-size:.78rem;
+    color:var(--text-muted);
+    margin-top:6px;
+    display:block;
+  }
+  .letter .sound{
+    font-size:.72rem;
+    color:var(--gold);
+    display:block;
+  }
+
+  /* TABLE */
+  .table-wrap{
+    overflow-x:auto;margin:18px 0;
+    border-radius:10px;border:1px solid var(--border);
+  }
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:480px;}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+  th{background:var(--bg-alt);color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--card-hover);}
+  td.ar{font-family:var(--font-ar);font-size:1.3rem;color:var(--gold);text-align:center;}
+
+  /* NOTE */
+  .note{
+    background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(20,184,166,.05));
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    padding:16px 18px;
+    margin:18px 0;
+    font-size:.95rem;
+  }
+  .note strong{color:var(--accent);}
+  .warn{
+    background:rgba(239,68,68,.08);
+    border-left:4px solid var(--red);
+    border-radius:8px;
+    padding:16px 18px;
+    margin:18px 0;
+    font-size:.95rem;
+  }
+  .warn strong{color:var(--red);}
+
+  /* NAVIGATION */
+  .nav-buttons{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:32px;padding-top:22px;
+    border-top:1px solid var(--border);
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    background:var(--accent);
+    color:#0f172a;
+    border:none;border-radius:10px;
+    padding:12px 24px;
+    font-size:.95rem;font-weight:700;
+    cursor:pointer;
+    transition:transform .2s,background .2s,opacity .2s;
+    font-family:var(--font);
+  }
+  .btn:hover{background:var(--accent-2);transform:translateY(-2px);}
+  .btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+  .btn.secondary{
+    background:transparent;color:var(--accent);
+    border:1px solid var(--accent);
+  }
+  .btn.secondary:hover{background:rgba(16,185,129,.1);}
+
+  /* PAGE DOTS */
+  .dots{
+    display:flex;justify-content:center;gap:8px;
+    margin:26px 0;flex-wrap:wrap;
+  }
+  .dot{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--bg-alt);
+    border:1px solid var(--border);
+    color:var(--text-muted);
+    font-size:.82rem;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:all .2s;
+    font-family:var(--font);
+  }
+  .dot:hover{border-color:var(--accent);color:var(--accent);}
+  .dot.active{
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    color:#0f172a;border-color:var(--accent);
+    transform:scale(1.1);
+  }
+  .dot.done{background:rgba(16,185,129,.2);color:var(--accent);border-color:var(--accent);}
+
+  /* BLOC TÉLÉCHARGEMENT */
+  .download-block{
+    background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(16,185,129,.05));
+    border:1px solid var(--border);
+    border-left:4px solid var(--gold);
+    border-radius:var(--radius);
+    padding:24px;
+    margin:40px 0 20px;
+    text-align:center;
+  }
+  .download-block h3{
+    color:var(--gold);font-size:1.15rem;margin-bottom:10px;
+  }
+  .download-block p{
+    color:var(--text-muted);font-size:.92rem;margin-bottom:16px;
+  }
+  .download-block .actions{
+    display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  }
+  .btn-download{
+    background:linear-gradient(135deg,var(--gold),#d97706);
+    color:#0f172a;border:none;border-radius:10px;
+    padding:14px 28px;font-size:.98rem;font-weight:800;
+    cursor:pointer;font-family:var(--font);
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .2s;
+    box-shadow:0 6px 18px rgba(245,158,11,.3);
+  }
+  .btn-download:hover{transform:translateY(-3px);}
+  .btn-download:disabled{opacity:.6;cursor:wait;transform:none;}
+  .btn-print{
+    background:transparent;color:var(--accent);
+    border:1px solid var(--accent);border-radius:10px;
+    padding:14px 22px;font-size:.9rem;font-weight:700;
+    cursor:pointer;font-family:var(--font);
+    display:inline-flex;align-items:center;gap:8px;
+    transition:background .2s;
+  }
+  .btn-print:hover{background:rgba(16,185,129,.1);}
+
+  /* FOOTER */
+  footer{
+    background:var(--bg-alt);
+    border-top:1px solid var(--border);
+    padding:30px 20px;
+    text-align:center;
+    color:var(--text-muted);
+    font-size:.88rem;
+  }
+  footer .ar{
+    font-family:var(--font-ar);
+    font-size:1.5rem;color:var(--accent);
+    display:block;margin-bottom:10px;
+  }
+
+  /* OVERLAY */
+  .overlay{
+    position:fixed;inset:0;
+    background:rgba(15,23,42,.92);
+    display:none;align-items:center;justify-content:center;
+    z-index:999;flex-direction:column;gap:20px;
+  }
+  .overlay.show{display:flex;}
+  .spinner{
+    width:56px;height:56px;
+    border:5px solid var(--border);
+    border-top-color:var(--accent);
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .overlay p{color:var(--text);font-weight:600;text-align:center;padding:0 20px;}
+
+  /* MODE PDF (contenu caché) */
+  #pdfContent{
+    background:#fff;color:#000;
+    position:absolute;left:-9999px;top:0;
+    width:210mm;
+  }
+  #pdfContent .pdf-page{
+    padding:14mm;
+    background:#fff;
+    page-break-after:always;
+    box-sizing:border-box;
+    color:#111;
+    font-size:11.5pt;
+    line-height:1.6;
+  }
+  #pdfContent .pdf-page:last-child{page-break-after:auto;}
+  #pdfContent .pdf-page-header{
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:2px solid #10b981;
+    padding-bottom:8px;margin-bottom:14px;
+  }
+  #pdfContent .pdf-page-num{
+    background:#10b981;color:#fff;
+    padding:4px 14px;border-radius:20px;
+    font-size:10pt;font-weight:700;
+  }
+  #pdfContent .pdf-page-title{
+    font-size:16pt;font-weight:800;color:#0f172a;
+    flex:1;text-align:right;
+  }
+  #pdfContent h2{
+    font-size:12.5pt;color:#059669;
+    margin:14px 0 8px;
+  }
+  #pdfContent h2::before{content:'◆ ';color:#f59e0b;font-size:9pt;}
+  #pdfContent p{margin-bottom:8px;color:#111;}
+  #pdfContent ul{margin:8px 0 12px 20px;}
+  #pdfContent ul li{margin-bottom:4px;color:#222;}
+  #pdfContent strong{color:#b45309;}
+  #pdfContent .ar-box{
+    background:#f3f4f6;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    padding:14px;margin:12px 0;text-align:center;
+  }
+  #pdfContent .ar-box .ar{
+    font-family:var(--font-ar);
+    font-size:22pt;color:#059669;
+    direction:rtl;line-height:1.5;
+  }
+  #pdfContent .ar-box .translit{color:#555;font-size:9.5pt;font-style:italic;margin-top:6px;}
+  #pdfContent .ar-box .fr{color:#111;font-size:10pt;margin-top:4px;}
+  #pdfContent .letters{
+    display:grid;grid-template-columns:repeat(7,1fr);
+    gap:6px;margin:12px 0;
+  }
+  #pdfContent .letter{
+    background:#f3f4f6;border:1px solid #d1d5db;
+    border-radius:6px;padding:8px 4px;text-align:center;
+  }
+  #pdfContent .letter .ar{
+    font-family:var(--font-ar);font-size:16pt;
+    color:#059669;display:block;line-height:1.2;
+  }
+  #pdfContent .letter .name{font-size:8pt;color:#555;display:block;margin-top:2px;}
+  #pdfContent .letter .sound{font-size:7.5pt;color:#b45309;display:block;}
+  #pdfContent .table-wrap{margin:10px 0;border:none;overflow:visible;}
+  #pdfContent table{
+    width:100%;border-collapse:collapse;
+    font-size:10pt;margin:10px 0;
+  }
+  #pdfContent th,#pdfContent td{
+    padding:6px 8px;border:1px solid #d1d5db;text-align:left;
+  }
+  #pdfContent th{background:#10b981;color:#fff;font-size:9pt;}
+  #pdfContent td.ar{
+    font-family:var(--font-ar);font-size:14pt;
+    color:#b45309;text-align:center;
+  }
+  #pdfContent .note{
+    background:#ecfdf5;border-left:4px solid #10b981;
+    padding:10px 12px;margin:12px 0;font-size:10.5pt;
+  }
+  #pdfContent .note strong{color:#059669;}
+  #pdfContent .warn{
+    background:#fef2f2;border-left:4px solid #ef4444;
+    padding:10px 12px;margin:12px 0;font-size:10.5pt;
+  }
+  #pdfContent .warn strong{color:#dc2626;}
+  #pdfContent .pdf-footer{
+    text-align:center;font-size:9pt;color:#888;
+    margin-top:16px;padding-top:8px;
+    border-top:1px solid #e5e7eb;
+  }
+
+  @media(max-width:600px){
+    .page{padding:26px 20px;}
+    .page-title{font-size:1.1rem;text-align:left;width:100%;}
+    .nav-buttons{flex-direction:column;}
+    .btn{width:100%;}
+    .dot{width:30px;height:30px;font-size:.75rem;}
+    .btn-pdf .lbl{display:none;}
+    .btn-download,.btn-print{width:100%;justify-content:center;}
+  }
+
+  /* IMPRESSION DIRECTE */
+  @media print{
+    header, footer, .dots, .nav-buttons, .download-block, .overlay{display:none !important;}
+    body{background:#fff;color:#000;}
+    .page{
+      display:block !important;
+      background:#fff;color:#000;
+      border:none;box-shadow:none;
+      padding:20px 0;
+      page-break-after:always;
+      animation:none;
+    }
+    .page:last-of-type{page-break-after:auto;}
+    .page-header{border-bottom:2px solid #10b981;}
+    .page-num{background:#10b981;color:#fff;}
+    .page-title{color:#000;}
+    .page h2{color:#059669;}
+    .page p, .page ul li{color:#111;}
+    .page strong{color:#b45309;}
+    .ar-box{background:#f3f4f6;border:1px solid #ccc;}
+    .ar-box .ar{color:#059669;}
+    .ar-box .translit{color:#555;}
+    .ar-box .fr{color:#111;}
+    .letter{background:#f3f4f6;border:1px solid #ccc;}
+    .letter .ar{color:#059669;}
+    .letter .name{color:#555;}
+    .letter .sound{color:#b45309;}
+    th{background:#10b981;color:#fff;}
+    td{border-color:#ccc;}
+    td.ar{color:#b45309;}
+    .note{background:#ecfdf5;}
+    .warn{background:#fef2f2;}
+    .table-wrap{border:1px solid #ccc;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">
+      <span class="ar">ا</span>
+      <span>Cours d'arabe</span>
+    </div>
+    <div class="progress-wrap" aria-label="Progression">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="page-indicator" id="pageIndicator">Page 1 / 10</div>
+    <button class="btn-pdf" id="pdfBtnHeader">
+      <span class="icon">⬇</span><span class="lbl">PDF</span>
+    </button>
+  </nav>
+</header>
+
+<main class="container" id="siteContent">
+
+  <!-- ========== PAGE 1 ========== -->
+  <section class="page active" data-page="1">
+    <div class="page-header">
+      <span class="page-num">PAGE 1</span>
+      <h1 class="page-title">L'alphabet arabe — vue d'ensemble</h1>
+    </div>
+    <p>L'arabe s'écrit et se lit <strong>de droite à gauche</strong>. L'alphabet compte <strong>28 lettres</strong>, toutes considérées comme des consonnes. Les voyelles courtes sont indiquées par des signes placés au-dessus ou en dessous des lettres.</p>
+    <div class="ar-box">
+      <div class="ar">ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي</div>
+      <div class="translit">ʾa bā tā ṯā ǧīm ḥā ḫā dāl ḏāl rā zāy sīn šīn ṣād ḍād ṭā ẓā ʿayn ġayn fā qāf kāf lām mīm nūn hā wāw yā</div>
+    </div>
+    <h2>Les 3 règles fondamentales</h2>
+    <ul>
+      <li><strong>Sens de lecture :</strong> de droite à gauche, de haut en bas.</li>
+      <li><strong>Pas de majuscules :</strong> toutes les lettres ont la même forme de base.</li>
+      <li><strong>Contexte :</strong> une lettre change de forme selon sa position dans le mot.</li>
+    </ul>
+    <div class="note"><strong>À retenir :</strong> avant d'apprendre les formes contextuelles, apprenez d'abord les 28 lettres à l'état <em>isolé</em>.</div>
+    <div class="nav-buttons">
+      <button class="btn secondary" disabled>← Précédent</button>
+      <button class="btn" onclick="goTo(2)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 2 ========== -->
+  <section class="page" data-page="2">
+    <div class="page-header">
+      <span class="page-num">PAGE 2</span>
+      <h1 class="page-title">Les lettres 1 à 14</h1>
+    </div>
+    <p>Voici la première moitié de l'alphabet avec le <strong>nom</strong> et le <strong>son</strong> de chaque lettre.</p>
+    <div class="letters">
+      <div class="letter"><span class="ar">ا</span><span class="name">alif</span><span class="sound">a / ā</span></div>
+      <div class="letter"><span class="ar">ب</span><span class="name">bā</span><span class="sound">b</span></div>
+      <div class="letter"><span class="ar">ت</span><span class="name">tā</span><span class="sound">t</span></div>
+      <div class="letter"><span class="ar">ث</span><span class="name">thā</span><span class="sound">th</span></div>
+      <div class="letter"><span class="ar">ج</span><span class="name">jīm</span><span class="sound">j</span></div>
+      <div class="letter"><span class="ar">ح</span><span class="name">ḥā</span><span class="sound">ḥ</span></div>
+      <div class="letter"><span class="ar">خ</span><span class="name">khā</span><span class="sound">kh</span></div>
+      <div class="letter"><span class="ar">د</span><span class="name">dāl</span><span class="sound">d</span></div>
+      <div class="letter"><span class="ar">ذ</span><span class="name">dhāl</span><span class="sound">dh</span></div>
+      <div class="letter"><span class="ar">ر</span><span class="name">rā</span><span class="sound">r</span></div>
+      <div class="letter"><span class="ar">ز</span><span class="name">zāy</span><span class="sound">z</span></div>
+      <div class="letter"><span class="ar">س</span><span class="name">sīn</span><span class="sound">s</span></div>
+      <div class="letter"><span class="ar">ش</span><span class="name">shīn</span><span class="sound">sh</span></div>
+      <div class="letter"><span class="ar">ص</span><span class="name">ṣād</span><span class="sound">ṣ</span></div>
+    </div>
+    <h2>Astuce mémoire</h2>
+    <p>Regroupez les lettres par <strong>forme similaire</strong> : <span style="font-family:var(--font-ar);font-size:1.3rem;color:var(--gold);">ب ت ث</span> ne diffèrent que par les points.</p>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(1)">← Précédent</button>
+      <button class="btn" onclick="goTo(3)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 3 ========== -->
+  <section class="page" data-page="3">
+    <div class="page-header">
+      <span class="page-num">PAGE 3</span>
+      <h1 class="page-title">Les lettres 15 à 28</h1>
+    </div>
+    <p>Deuxième moitié de l'alphabet. Une fois ces lettres maîtrisées, vous connaîtrez toutes les consonnes arabes.</p>
+    <div class="letters">
+      <div class="letter"><span class="ar">ض</span><span class="name">ḍād</span><span class="sound">ḍ</span></div>
+      <div class="letter"><span class="ar">ط</span><span class="name">ṭā</span><span class="sound">ṭ</span></div>
+      <div class="letter"><span class="ar">ظ</span><span class="name">ẓā</span><span class="sound">ẓ</span></div>
+      <div class="letter"><span class="ar">ع</span><span class="name">ʿayn</span><span class="sound">ʿ</span></div>
+      <div class="letter"><span class="ar">غ</span><span class="name">ghayn</span><span class="sound">gh</span></div>
+      <div class="letter"><span class="ar">ف</span><span class="name">fā</span><span class="sound">f</span></div>
+      <div class="letter"><span class="ar">ق</span><span class="name">qāf</span><span class="sound">q</span></div>
+      <div class="letter"><span class="ar">ك</span><span class="name">kāf</span><span class="sound">k</span></div>
+      <div class="letter"><span class="ar">ل</span><span class="name">lām</span><span class="sound">l</span></div>
+      <div class="letter"><span class="ar">م</span><span class="name">mīm</span><span class="sound">m</span></div>
+      <div class="letter"><span class="ar">ن</span><span class="name">nūn</span><span class="sound">n</span></div>
+      <div class="letter"><span class="ar">ه</span><span class="name">hā</span><span class="sound">h</span></div>
+      <div class="letter"><span class="ar">و</span><span class="name">wāw</span><span class="sound">w / ū</span></div>
+      <div class="letter"><span class="ar">ي</span><span class="name">yā</span><span class="sound">y / ī</span></div>
+    </div>
+    <div class="warn"><strong>Attention :</strong> les lettres <span style="font-family:var(--font-ar);color:var(--gold);">ع غ ح خ</span> viennent de la gorge. Elles n'existent pas en français — un audio natif est indispensable.</div>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(2)">← Précédent</button>
+      <button class="btn" onclick="goTo(4)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 4 ========== -->
+  <section class="page" data-page="4">
+    <div class="page-header">
+      <span class="page-num">PAGE 4</span>
+      <h1 class="page-title">Les voyelles courtes (ḥarakāt)</h1>
+    </div>
+    <p>Les consonnes seules ne suffisent pas : il faut les <strong>voyelles courtes</strong>, appelées <em>ḥarakāt</em>, placées au-dessus ou en dessous des lettres.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Signe</th><th>Nom</th><th>Son</th><th>Exemple</th></tr></thead>
+        <tbody>
+          <tr><td class="ar">بَ</td><td>Fatḥa</td><td>a court</td><td class="ar">بَ = ba</td></tr>
+          <tr><td class="ar">بِ</td><td>Kasra</td><td>i court</td><td class="ar">بِ = bi</td></tr>
+          <tr><td class="ar">بُ</td><td>Ḍamma</td><td>ou court</td><td class="ar">بُ = bou</td></tr>
+          <tr><td class="ar">بْ</td><td>Sukūn</td><td>absence de voyelle</td><td class="ar">بْ = b</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Les voyelles longues</h2>
+    <ul>
+      <li><span style="font-family:var(--font-ar);color:var(--gold);">بَا</span> = bā (a long)</li>
+      <li><span style="font-family:var(--font-ar);color:var(--gold);">بِي</span> = bī (i long)</li>
+      <li><span style="font-family:var(--font-ar);color:var(--gold);">بُو</span> = bū (ou long)</li>
+    </ul>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(3)">← Précédent</button>
+      <button class="btn" onclick="goTo(5)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 5 ========== -->
+  <section class="page" data-page="5">
+    <div class="page-header">
+      <span class="page-num">PAGE 5</span>
+      <h1 class="page-title">Tanwīn, Shadda et Sukūn</h1>
+    </div>
+    <p>Trois signes complètent les voyelles et modifient la lecture.</p>
+    <h2>1. Le Tanwīn (doublement)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Signe</th><th>Nom</th><th>Son</th></tr></thead>
+        <tbody>
+          <tr><td class="ar">بًا</td><td>Tanwīn fatḥ</td><td>ban</td></tr>
+          <tr><td class="ar">بٍ</td><td>Tanwīn kasr</td><td>bin</td></tr>
+          <tr><td class="ar">بٌ</td><td>Tanwīn ḍamm</td><td>boun</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>2. La Shadda (doublement de consonne)</h2>
+    <div class="ar-box"><div class="ar">بَّ</div><div class="translit">bba (consonne prononcée deux fois)</div></div>
+    <h2>3. Le Sukūn</h2>
+    <div class="ar-box"><div class="ar">مَنْ = man</div><div class="translit">m + a + n (le n est sans voyelle)</div></div>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(4)">← Précédent</button>
+      <button class="btn" onclick="goTo(6)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 6 ========== -->
+  <section class="page" data-page="6">
+    <div class="page-header">
+      <span class="page-num">PAGE 6</span>
+      <h1 class="page-title">Les formes contextuelles des lettres</h1>
+    </div>
+    <p>Une lettre arabe <strong>change de forme</strong> selon sa position dans le mot.</p>
+    <h2>Exemple avec la lettre ب</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Position</th><th>Forme</th><th>Exemple</th><th>Lecture</th></tr></thead>
+        <tbody>
+          <tr><td>Isolée</td><td class="ar">ب</td><td class="ar">ب</td><td>b</td></tr>
+          <tr><td>Initiale</td><td class="ar">بـ</td><td class="ar">بَاب</td><td>bāb (porte)</td></tr>
+          <tr><td>Médiane</td><td class="ar">ـبـ</td><td class="ar">كَبِير</td><td>kabīr (grand)</td></tr>
+          <tr><td>Finale</td><td class="ar">ـب</td><td class="ar">كِتَاب</td><td>kitāb (livre)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><strong>Bon à savoir :</strong> 6 lettres ne s'attachent <em>jamais</em> à la lettre suivante : <span style="font-family:var(--font-ar);color:var(--gold);font-size:1.2rem;">ا د ذ ر ز و</span>.</div>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(5)">← Précédent</button>
+      <button class="btn" onclick="goTo(7)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 7 ========== -->
+  <section class="page" data-page="7">
+    <div class="page-header">
+      <span class="page-num">PAGE 7</span>
+      <h1 class="page-title">Lire ses premiers mots</h1>
+    </div>
+    <p>Maintenant que vous connaissez les lettres et les voyelles, lisez ces mots courants.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Arabe</th><th>Translitération</th><th>Français</th></tr></thead>
+        <tbody>
+          <tr><td class="ar">بَاب</td><td>bāb</td><td>porte</td></tr>
+          <tr><td class="ar">كِتَاب</td><td>kitāb</td><td>livre</td></tr>
+          <tr><td class="ar">قَلَم</td><td>qalam</td><td>stylo</td></tr>
+          <tr><td class="ar">بَيْت</td><td>bayt</td><td>maison</td></tr>
+          <tr><td class="ar">مَاء</td><td>māʾ</td><td>eau</td></tr>
+          <tr><td class="ar">وَلَد</td><td>walad</td><td>garçon</td></tr>
+          <tr><td class="ar">بِنْت</td><td>bint</td><td>fille</td></tr>
+          <tr><td class="ar">شَمْس</td><td>shams</td><td>soleil</td></tr>
+          <tr><td class="ar">قَمَر</td><td>qamar</td><td>lune</td></tr>
+          <tr><td class="ar">مَدْرَسَة</td><td>madrasa</td><td>école</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(6)">← Précédent</button>
+      <button class="btn" onclick="goTo(8)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 8 ========== -->
+  <section class="page" data-page="8">
+    <div class="page-header">
+      <span class="page-num">PAGE 8</span>
+      <h1 class="page-title">Les mots-outils fréquents</h1>
+    </div>
+    <p>Ces petits mots reviennent constamment en arabe.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Arabe</th><th>Translitération</th><th>Français</th></tr></thead>
+        <tbody>
+          <tr><td class="ar">مِنْ</td><td>min</td><td>de / depuis</td></tr>
+          <tr><td class="ar">إِلَى</td><td>ilā</td><td>vers / à</td></tr>
+          <tr><td class="ar">فِي</td><td>fī</td><td>dans</td></tr>
+          <tr><td class="ar">عَلَى</td><td>ʿalā</td><td>sur</td></tr>
+          <tr><td class="ar">مَعَ</td><td>maʿa</td><td>avec</td></tr>
+          <tr><td class="ar">هَذَا</td><td>hādhā</td><td>ceci (masc.)</td></tr>
+          <tr><td class="ar">هَذِهِ</td><td>hādhihi</td><td>ceci (fém.)</td></tr>
+          <tr><td class="ar">وَ</td><td>wa</td><td>et</td></tr>
+          <tr><td class="ar">أَوْ</td><td>aw</td><td>ou</td></tr>
+          <tr><td class="ar">لَا</td><td>lā</td><td>non / ne pas</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(7)">← Précédent</button>
+      <button class="btn" onclick="goTo(9)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 9 ========== -->
+  <section class="page" data-page="9">
+    <div class="page-header">
+      <span class="page-num">PAGE 9</span>
+      <h1 class="page-title">Lire une phrase complète</h1>
+    </div>
+    <p>Voici des phrases simples, entièrement vocalisées.</p>
+    <div class="ar-box"><div class="ar">هَذَا كِتَابٌ.</div><div class="translit">hādhā kitābun.</div><div class="fr">Ceci est un livre.</div></div>
+    <div class="ar-box"><div class="ar">الْبَيْتُ كَبِيرٌ.</div><div class="translit">al-baytu kabīrun.</div><div class="fr">La maison est grande.</div></div>
+    <div class="ar-box"><div class="ar">أَنَا أَقْرَأُ الْقُرْآنَ.</div><div class="translit">anā aqraʾu al-qurʾāna.</div><div class="fr">Je lis le Coran.</div></div>
+    <div class="ar-box"><div class="ar">الْوَلَدُ فِي الْمَدْرَسَةِ.</div><div class="translit">al-waladu fī al-madrasati.</div><div class="fr">Le garçon est à l'école.</div></div>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(8)">← Précédent</button>
+      <button class="btn" onclick="goTo(10)">Suivant →</button>
+    </div>
+  </section>
+
+  <!-- ========== PAGE 10 ========== -->
+  <section class="page" data-page="10">
+    <div class="page-header">
+      <span class="page-num">PAGE 10</span>
+      <h1 class="page-title">Pratique et ressources</h1>
+    </div>
+    <p>Félicitations ! Vous avez parcouru les 10 pages du cours.</p>
+    <h2>Plan d'entraînement en 30 jours</h2>
+    <ul>
+      <li><strong>Jours 1-7 :</strong> maîtriser les 28 lettres isolées.</li>
+      <li><strong>Jours 8-14 :</strong> voyelles, Sukūn, Shadda, Tanwīn.</li>
+      <li><strong>Jours 15-21 :</strong> formes contextuelles et lecture de mots.</li>
+      <li><strong>Jours 22-30 :</strong> mots-outils et phrases complètes.</li>
+    </ul>
+    <h2>Ressources recommandées</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Ressource</th><th>Usage</th><th>Gratuit ?</th></tr></thead>
+        <tbody>
+          <tr><td>Merkez Al Fahm</td><td>10 leçons vidéo courtes</td><td>Oui</td></tr>
+          <tr><td>Site inter-académique</td><td>Ressources Éducation nationale</td><td>Oui</td></tr>
+          <tr><td>Talamize</td><td>Parcours complet jusqu'au Coran</td><td>Non</td></tr>
+          <tr><td>Kaleela</td><td>App interface française</td><td>Partiel</td></tr>
+          <tr><td>AlifBee</td><td>200+ leçons, 10 niveaux</td><td>Partiel</td></tr>
+          <tr><td>Kalima</td><td>Reconnaissance d'écriture OCR</td><td>7 jours</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><strong>Conseil final :</strong> lisez à voix haute 10 minutes par jour. La lecture arabe s'automatise par la répétition quotidienne.</div>
+    <div class="ar-box">
+      <div class="ar">بالتوفيق في تعلّمك!</div>
+      <div class="translit">bittawfīq fī taʿallumik !</div>
+      <div class="fr">Bonne chance dans ton apprentissage !</div>
+    </div>
+    <div class="nav-buttons">
+      <button class="btn secondary" onclick="goTo(9)">← Précédent</button>
+      <button class="btn" onclick="goTo(1)">↺ Recommencer</button>
+    </div>
+  </section>
+
+  <!-- DOTS -->
+  <div class="dots" id="dots"></div>
+
+  <!-- ========== BLOC TÉLÉCHARGEMENT PDF ========== -->
+  <div class="download-block">
+    <h3>📥 Télécharger le cours complet</h3>
+    <p>Obtenez les 10 pages dans un seul fichier PDF, prêt à imprimer ou à lire hors ligne.</p>
+    <div class="actions">
+      <button class="btn-download" id="pdfBtnMain">
+        <span>⬇</span> Télécharger en PDF
+      </button>
+      <button class="btn-print" id="printBtn">
+        <span>🖨</span> Imprimer / Enregistrer en PDF
+      </button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="ar">اِقْرَأْ</span>
+  <p>Cours d'arabe en 10 pages numérotées — pour francophones débutants.</p>
+  <p style="font-size:.78rem;opacity:.7;">© 2026 — Document pédagogique.</p>
+</footer>
+
+<!-- OVERLAY DE CHARGEMENT -->
+<div class="overlay" id="overlay">
+  <div class="spinner"></div>
+  <p id="statusText">Génération du PDF en cours…</p>
+</div>
+
+<!-- CONTENU PDF CACHÉ -->
+<div id="pdfContent" aria-hidden="true"></div>
+
+<script>
+  /* ================= NAVIGATION ================= */
+  const pages = document.querySelectorAll('.page');
+  const total = pages.length;
+  const dotsContainer = document.getElementById('dots');
+  const progressBar = document.getElementById('progressBar');
+  const pageIndicator = document.getElementById('pageIndicator');
+  let current = 1;
+
+  for (let i = 1; i <= total; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.textContent = i;
+    dot.setAttribute('aria-label', 'Aller à la page ' + i);
+    dot.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  function goTo(n) {
+    if (n < 1 || n > total) return;
+    pages.forEach(p => p.classList.remove('active'));
+    const target = document.querySelector(`.page[data-page="${n}"]`);
+    if (target) target.classList.add('active');
+
+    const dots = dotsContainer.querySelectorAll('.dot');
+    dots.forEach((d, i) => {
+      d.classList.remove('active', 'done');
+      if (i + 1 === n) d.classList.add('active');
+      else if (i + 1 < n) d.classList.add('done');
+    });
+
+    progressBar.style.width = (n / total * 100) + '%';
+    pageIndicator.textContent = `Page ${n} / ${total}`;
+    current = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') goTo(current + 1);
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  goTo(1);
+
+  /* ================= GÉNÉRATION PDF ================= */
+  const overlay = document.getElementById('overlay');
+  const statusText = document.getElementById('statusText');
+  const pdfContent = document.getElementById('pdfContent');
+  const pdfBtnHeader = document.getElementById('pdfBtnHeader');
+  const pdfBtnMain = document.getElementById('pdfBtnMain');
+  const printBtn = document.getElementById('printBtn');
+
+  function buildPdfContent() {
+    pdfContent.innerHTML = '';
+    pages.forEach((page) => {
+      const clone = page.cloneNode(true);
+      clone.classList.remove('page', 'active');
+      clone.classList.add('pdf-page');
+
+      const header = clone.querySelector('.page-header');
+      if (header) {
+        header.className = 'pdf-page-header';
+        const num = header.querySelector('.page-num');
+        if (num) num.className = 'pdf-page-num';
+        const title = header.querySelector('.page-title');
+        if (title) title.className = 'pdf-page-title';
+      }
+
+      const navBtns = clone.querySelector('.nav-buttons');
+      if (navBtns) navBtns.remove();
+
+      const footer = document.createElement('div');
+      footer.className = 'pdf-footer';
+      footer.textContent = "Cours d'arabe — Page " + (clone.dataset.page || '') + ' / 10';
+      clone.appendChild(footer);
+
+      pdfContent.appendChild(clone);
+    });
+  }
+
+  async function openPdfInNewTab() {
+    pdfBtnHeader.disabled = true;
+    pdfBtnMain.disabled = true;
+    overlay.classList.add('show');
+    statusText.textContent = 'Préparation du document…';
+
+    try {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+
+      buildPdfContent();
+
+      pdfContent.style.position = 'fixed';
+      pdfContent.style.left = '0';
+      pdfContent.style.top = '0';
+      pdfContent.style.zIndex = '-1';
+      pdfContent.style.opacity = '0.01';
+
+      await new Promise(r => setTimeout(r, 200));
+
+      statusText.textContent = 'Génération du PDF…';
+
+      const opt = {
+        margin: 0,
+        filename: 'cours-arabe-10-pages.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          windowWidth: 794
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'], avoid: '.ar-box, table, .letters, .note, .warn' }
+      };
+
+      // Générer le blob
+      const pdfBlob = await html2pdf().set(opt).from(pdfContent).outputPdf('blob');
+      const url = URL.createObjectURL(pdfBlob);
+
+      // Ouvrir dans un nouvel onglet (visible immédiatement)
+      const newTab = window.open(url, '_blank');
+
+      if (!newTab) {
+        // Si le popup est bloqué → forcer le téléchargement
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'cours-arabe-10-pages.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        statusText.textContent = 'Popup bloqué → téléchargement forcé ✓';
+      } else {
+        statusText.textContent = 'PDF ouvert dans un nouvel onglet ✓';
+      }
+
+      setTimeout(() => {
+        overlay.classList.remove('show');
+        pdfContent.style.left = '-9999px';
+        pdfContent.style.position = 'absolute';
+        pdfContent.style.opacity = '0';
+        pdfContent.innerHTML = '';
+      }, 1200);
+
+    } catch (err) {
+      console.error(err);
+      statusText.textContent = 'Erreur : ' + err.message + ' — Essayez le bouton Imprimer.';
+      setTimeout(() => overlay.classList.remove('show'), 3500);
+    } finally {
+      pdfBtnHeader.disabled = false;
+      pdfBtnMain.disabled = false;
+    }
+  }
+
+  pdfBtnHeader.addEventListener('click', openPdfInNewTab);
+  pdfBtnMain.addEventListener('click', openPdfInNewTab);
+
+  /* ================= IMPRESSION (fallback) ================= */
+  printBtn.addEventListener('click', () => {
+    // Affiche toutes les pages temporairement pour l'impression
+    pages.forEach(p => p.style.display = 'block');
+    window.print();
+    // Restaure l'affichage après impression
+    setTimeout(() => {
+      pages.forEach(p => p.style.display = '');
+      goTo(current);
+    }, 300);
+  });
+</script>
+
+</body>
+  </html>
