@@ -4,11 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Apprendre à lire l'arabe — Cours en 10 pages</title>
-<meta name="description" content="Cours complet pour apprendre à lire l'arabe en 10 pages numérotées. Téléchargeable en PDF.">
-
-<!-- Bibliothèque PDF (CDN) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+<meta name="description" content="Cours complet pour apprendre à lire l'arabe en 10 pages numérotées. Téléchargeable en PDF via l'impression.">
 <style>
   :root{
     --bg:#0f172a;
@@ -37,7 +33,6 @@
     font-size:16px;
   }
   a{color:var(--accent);text-decoration:none;}
-  a:hover{color:var(--accent-2);}
 
   /* HEADER */
   header{
@@ -76,12 +71,10 @@
     padding:10px 18px;font-size:.9rem;font-weight:700;
     cursor:pointer;font-family:var(--font);
     display:inline-flex;align-items:center;gap:8px;
-    transition:transform .2s,opacity .2s;
+    transition:transform .2s;
     white-space:nowrap;
   }
   .btn-pdf:hover{transform:translateY(-2px);}
-  .btn-pdf:disabled{opacity:.6;cursor:wait;}
-  .btn-pdf .icon{font-size:1.1rem;}
 
   /* CONTAINER */
   .container{max-width:900px;margin:0 auto;padding:30px 20px 60px;}
@@ -97,10 +90,7 @@
     animation:fadeIn .4s ease;
   }
   .page.active{display:block;}
-  @keyframes fadeIn{
-    from{opacity:0;transform:translateY(15px);}
-    to{opacity:1;transform:none;}
-  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(15px);}to{opacity:1;transform:none;}}
   .page-header{
     display:flex;align-items:center;justify-content:space-between;
     margin-bottom:22px;padding-bottom:16px;
@@ -115,20 +105,13 @@
   }
   .page-title{
     font-size:clamp(1.3rem,3vw,1.7rem);
-    font-weight:800;
-    color:var(--text);
-    flex:1;
-    text-align:right;
+    font-weight:800;color:var(--text);flex:1;text-align:right;
   }
   .page h2{
-    font-size:1.25rem;
-    margin:26px 0 12px;
-    color:var(--accent);
+    font-size:1.25rem;margin:26px 0 12px;color:var(--accent);
     display:flex;align-items:center;gap:10px;
   }
-  .page h2::before{
-    content:'◆';color:var(--gold);font-size:.9rem;
-  }
+  .page h2::before{content:'◆';color:var(--gold);font-size:.9rem;}
   .page p{color:var(--text);margin-bottom:14px;}
   .page ul{margin:12px 0 18px 22px;}
   .page ul li{color:var(--text-muted);margin-bottom:8px;}
@@ -136,100 +119,51 @@
 
   /* ARABIC BOX */
   .ar-box{
-    background:var(--bg);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:22px;
-    margin:18px 0;
-    text-align:center;
+    background:var(--bg);border:1px solid var(--border);
+    border-radius:12px;padding:22px;margin:18px 0;text-align:center;
   }
   .ar-box .ar{
     font-family:var(--font-ar);
     font-size:clamp(2rem,6vw,3rem);
-    color:var(--accent);
-    line-height:1.6;
-    direction:rtl;
+    color:var(--accent);line-height:1.6;direction:rtl;
   }
-  .ar-box .translit{
-    color:var(--text-muted);
-    font-size:.9rem;
-    margin-top:10px;
-    font-style:italic;
-  }
-  .ar-box .fr{
-    color:var(--text);
-    font-size:.95rem;
-    margin-top:6px;
-  }
+  .ar-box .translit{color:var(--text-muted);font-size:.9rem;margin-top:10px;font-style:italic;}
+  .ar-box .fr{color:var(--text);font-size:.95rem;margin-top:6px;}
 
   /* LETTER GRID */
   .letters{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
-    gap:12px;
-    margin:20px 0;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+    gap:12px;margin:20px 0;
   }
   .letter{
-    background:var(--bg);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:14px 8px;
-    text-align:center;
+    background:var(--bg);border:1px solid var(--border);
+    border-radius:10px;padding:14px 8px;text-align:center;
     transition:transform .2s,border-color .2s;
   }
-  .letter:hover{
-    transform:translateY(-4px);
-    border-color:var(--accent);
-    background:var(--card-hover);
-  }
-  .letter .ar{
-    font-family:var(--font-ar);
-    font-size:2rem;
-    color:var(--accent);
-    display:block;
-    line-height:1.2;
-  }
-  .letter .name{
-    font-size:.78rem;
-    color:var(--text-muted);
-    margin-top:6px;
-    display:block;
-  }
-  .letter .sound{
-    font-size:.72rem;
-    color:var(--gold);
-    display:block;
-  }
+  .letter:hover{transform:translateY(-4px);border-color:var(--accent);background:var(--card-hover);}
+  .letter .ar{font-family:var(--font-ar);font-size:2rem;color:var(--accent);display:block;line-height:1.2;}
+  .letter .name{font-size:.78rem;color:var(--text-muted);margin-top:6px;display:block;}
+  .letter .sound{font-size:.72rem;color:var(--gold);display:block;}
 
   /* TABLE */
-  .table-wrap{
-    overflow-x:auto;margin:18px 0;
-    border-radius:10px;border:1px solid var(--border);
-  }
+  .table-wrap{overflow-x:auto;margin:18px 0;border-radius:10px;border:1px solid var(--border);}
   table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:480px;}
   th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
   th{background:var(--bg-alt);color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;}
   tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover{background:var(--card-hover);}
   td.ar{font-family:var(--font-ar);font-size:1.3rem;color:var(--gold);text-align:center;}
 
   /* NOTE */
   .note{
     background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(20,184,166,.05));
-    border-left:4px solid var(--accent);
-    border-radius:8px;
-    padding:16px 18px;
-    margin:18px 0;
-    font-size:.95rem;
+    border-left:4px solid var(--accent);border-radius:8px;
+    padding:16px 18px;margin:18px 0;font-size:.95rem;
   }
   .note strong{color:var(--accent);}
   .warn{
     background:rgba(239,68,68,.08);
-    border-left:4px solid var(--red);
-    border-radius:8px;
-    padding:16px 18px;
-    margin:18px 0;
-    font-size:.95rem;
+    border-left:4px solid var(--red);border-radius:8px;
+    padding:16px 18px;margin:18px 0;font-size:.95rem;
   }
   .warn strong{color:var(--red);}
 
@@ -237,48 +171,33 @@
   .nav-buttons{
     display:flex;justify-content:space-between;align-items:center;
     margin-top:32px;padding-top:22px;
-    border-top:1px solid var(--border);
-    gap:12px;
-    flex-wrap:wrap;
+    border-top:1px solid var(--border);gap:12px;flex-wrap:wrap;
   }
   .btn{
-    background:var(--accent);
-    color:#0f172a;
+    background:var(--accent);color:#0f172a;
     border:none;border-radius:10px;
-    padding:12px 24px;
-    font-size:.95rem;font-weight:700;
-    cursor:pointer;
-    transition:transform .2s,background .2s,opacity .2s;
+    padding:12px 24px;font-size:.95rem;font-weight:700;
+    cursor:pointer;transition:transform .2s,background .2s,opacity .2s;
     font-family:var(--font);
   }
   .btn:hover{background:var(--accent-2);transform:translateY(-2px);}
   .btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
-  .btn.secondary{
-    background:transparent;color:var(--accent);
-    border:1px solid var(--accent);
-  }
+  .btn.secondary{background:transparent;color:var(--accent);border:1px solid var(--accent);}
   .btn.secondary:hover{background:rgba(16,185,129,.1);}
 
-  /* PAGE DOTS */
-  .dots{
-    display:flex;justify-content:center;gap:8px;
-    margin:26px 0;flex-wrap:wrap;
-  }
+  /* DOTS */
+  .dots{display:flex;justify-content:center;gap:8px;margin:26px 0;flex-wrap:wrap;}
   .dot{
     width:34px;height:34px;border-radius:50%;
-    background:var(--bg-alt);
-    border:1px solid var(--border);
-    color:var(--text-muted);
-    font-size:.82rem;font-weight:700;
+    background:var(--bg-alt);border:1px solid var(--border);
+    color:var(--text-muted);font-size:.82rem;font-weight:700;
     display:flex;align-items:center;justify-content:center;
-    cursor:pointer;transition:all .2s;
-    font-family:var(--font);
+    cursor:pointer;transition:all .2s;font-family:var(--font);
   }
   .dot:hover{border-color:var(--accent);color:var(--accent);}
   .dot.active{
     background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    color:#0f172a;border-color:var(--accent);
-    transform:scale(1.1);
+    color:#0f172a;border-color:var(--accent);transform:scale(1.1);
   }
   .dot.done{background:rgba(16,185,129,.2);color:var(--accent);border-color:var(--accent);}
 
@@ -288,166 +207,35 @@
     border:1px solid var(--border);
     border-left:4px solid var(--gold);
     border-radius:var(--radius);
-    padding:24px;
-    margin:40px 0 20px;
-    text-align:center;
+    padding:26px;margin:40px 0 20px;text-align:center;
   }
-  .download-block h3{
-    color:var(--gold);font-size:1.15rem;margin-bottom:10px;
-  }
-  .download-block p{
-    color:var(--text-muted);font-size:.92rem;margin-bottom:16px;
-  }
-  .download-block .actions{
-    display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
-  }
+  .download-block h3{color:var(--gold);font-size:1.2rem;margin-bottom:10px;}
+  .download-block p{color:var(--text-muted);font-size:.92rem;margin-bottom:18px;}
   .btn-download{
     background:linear-gradient(135deg,var(--gold),#d97706);
     color:#0f172a;border:none;border-radius:10px;
-    padding:14px 28px;font-size:.98rem;font-weight:800;
+    padding:16px 32px;font-size:1rem;font-weight:800;
     cursor:pointer;font-family:var(--font);
-    display:inline-flex;align-items:center;gap:8px;
+    display:inline-flex;align-items:center;gap:10px;
     transition:transform .2s;
     box-shadow:0 6px 18px rgba(245,158,11,.3);
   }
   .btn-download:hover{transform:translateY(-3px);}
-  .btn-download:disabled{opacity:.6;cursor:wait;transform:none;}
-  .btn-print{
-    background:transparent;color:var(--accent);
-    border:1px solid var(--accent);border-radius:10px;
-    padding:14px 22px;font-size:.9rem;font-weight:700;
-    cursor:pointer;font-family:var(--font);
-    display:inline-flex;align-items:center;gap:8px;
-    transition:background .2s;
+  .download-block .hint{
+    font-size:.82rem;color:var(--text-muted);
+    margin-top:14px;line-height:1.6;
   }
-  .btn-print:hover{background:rgba(16,185,129,.1);}
+  .download-block .hint strong{color:var(--accent);}
 
   /* FOOTER */
   footer{
-    background:var(--bg-alt);
-    border-top:1px solid var(--border);
-    padding:30px 20px;
-    text-align:center;
-    color:var(--text-muted);
-    font-size:.88rem;
+    background:var(--bg-alt);border-top:1px solid var(--border);
+    padding:30px 20px;text-align:center;
+    color:var(--text-muted);font-size:.88rem;
   }
   footer .ar{
-    font-family:var(--font-ar);
-    font-size:1.5rem;color:var(--accent);
-    display:block;margin-bottom:10px;
-  }
-
-  /* OVERLAY */
-  .overlay{
-    position:fixed;inset:0;
-    background:rgba(15,23,42,.92);
-    display:none;align-items:center;justify-content:center;
-    z-index:999;flex-direction:column;gap:20px;
-  }
-  .overlay.show{display:flex;}
-  .spinner{
-    width:56px;height:56px;
-    border:5px solid var(--border);
-    border-top-color:var(--accent);
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-  }
-  @keyframes spin{to{transform:rotate(360deg);}}
-  .overlay p{color:var(--text);font-weight:600;text-align:center;padding:0 20px;}
-
-  /* MODE PDF (contenu caché) */
-  #pdfContent{
-    background:#fff;color:#000;
-    position:absolute;left:-9999px;top:0;
-    width:210mm;
-  }
-  #pdfContent .pdf-page{
-    padding:14mm;
-    background:#fff;
-    page-break-after:always;
-    box-sizing:border-box;
-    color:#111;
-    font-size:11.5pt;
-    line-height:1.6;
-  }
-  #pdfContent .pdf-page:last-child{page-break-after:auto;}
-  #pdfContent .pdf-page-header{
-    display:flex;align-items:center;justify-content:space-between;
-    border-bottom:2px solid #10b981;
-    padding-bottom:8px;margin-bottom:14px;
-  }
-  #pdfContent .pdf-page-num{
-    background:#10b981;color:#fff;
-    padding:4px 14px;border-radius:20px;
-    font-size:10pt;font-weight:700;
-  }
-  #pdfContent .pdf-page-title{
-    font-size:16pt;font-weight:800;color:#0f172a;
-    flex:1;text-align:right;
-  }
-  #pdfContent h2{
-    font-size:12.5pt;color:#059669;
-    margin:14px 0 8px;
-  }
-  #pdfContent h2::before{content:'◆ ';color:#f59e0b;font-size:9pt;}
-  #pdfContent p{margin-bottom:8px;color:#111;}
-  #pdfContent ul{margin:8px 0 12px 20px;}
-  #pdfContent ul li{margin-bottom:4px;color:#222;}
-  #pdfContent strong{color:#b45309;}
-  #pdfContent .ar-box{
-    background:#f3f4f6;
-    border:1px solid #d1d5db;
-    border-radius:8px;
-    padding:14px;margin:12px 0;text-align:center;
-  }
-  #pdfContent .ar-box .ar{
-    font-family:var(--font-ar);
-    font-size:22pt;color:#059669;
-    direction:rtl;line-height:1.5;
-  }
-  #pdfContent .ar-box .translit{color:#555;font-size:9.5pt;font-style:italic;margin-top:6px;}
-  #pdfContent .ar-box .fr{color:#111;font-size:10pt;margin-top:4px;}
-  #pdfContent .letters{
-    display:grid;grid-template-columns:repeat(7,1fr);
-    gap:6px;margin:12px 0;
-  }
-  #pdfContent .letter{
-    background:#f3f4f6;border:1px solid #d1d5db;
-    border-radius:6px;padding:8px 4px;text-align:center;
-  }
-  #pdfContent .letter .ar{
-    font-family:var(--font-ar);font-size:16pt;
-    color:#059669;display:block;line-height:1.2;
-  }
-  #pdfContent .letter .name{font-size:8pt;color:#555;display:block;margin-top:2px;}
-  #pdfContent .letter .sound{font-size:7.5pt;color:#b45309;display:block;}
-  #pdfContent .table-wrap{margin:10px 0;border:none;overflow:visible;}
-  #pdfContent table{
-    width:100%;border-collapse:collapse;
-    font-size:10pt;margin:10px 0;
-  }
-  #pdfContent th,#pdfContent td{
-    padding:6px 8px;border:1px solid #d1d5db;text-align:left;
-  }
-  #pdfContent th{background:#10b981;color:#fff;font-size:9pt;}
-  #pdfContent td.ar{
-    font-family:var(--font-ar);font-size:14pt;
-    color:#b45309;text-align:center;
-  }
-  #pdfContent .note{
-    background:#ecfdf5;border-left:4px solid #10b981;
-    padding:10px 12px;margin:12px 0;font-size:10.5pt;
-  }
-  #pdfContent .note strong{color:#059669;}
-  #pdfContent .warn{
-    background:#fef2f2;border-left:4px solid #ef4444;
-    padding:10px 12px;margin:12px 0;font-size:10.5pt;
-  }
-  #pdfContent .warn strong{color:#dc2626;}
-  #pdfContent .pdf-footer{
-    text-align:center;font-size:9pt;color:#888;
-    margin-top:16px;padding-top:8px;
-    border-top:1px solid #e5e7eb;
+    font-family:var(--font-ar);font-size:1.5rem;
+    color:var(--accent);display:block;margin-bottom:10px;
   }
 
   @media(max-width:600px){
@@ -457,42 +245,128 @@
     .btn{width:100%;}
     .dot{width:30px;height:30px;font-size:.75rem;}
     .btn-pdf .lbl{display:none;}
-    .btn-download,.btn-print{width:100%;justify-content:center;}
   }
 
-  /* IMPRESSION DIRECTE */
+  /* ============ IMPRESSION / PDF ============ */
   @media print{
-    header, footer, .dots, .nav-buttons, .download-block, .overlay{display:none !important;}
-    body{background:#fff;color:#000;}
+    @page{size:A4;margin:14mm;}
+
+    /* Masquer les éléments non imprimables */
+    header, footer, .dots, .nav-buttons, .download-block, .btn-pdf{display:none !important;}
+
+    /* Fond blanc et texte noir */
+    body,html{
+      background:#fff !important;
+      color:#000 !important;
+      font-size:11pt;
+    }
+    .container{max-width:100%;padding:0;}
+
+    /* Afficher TOUTES les pages */
     .page{
       display:block !important;
-      background:#fff;color:#000;
-      border:none;box-shadow:none;
-      padding:20px 0;
+      background:#fff !important;
+      color:#000 !important;
+      border:none !important;
+      box-shadow:none !important;
+      border-radius:0 !important;
+      padding:0 !important;
+      margin:0 !important;
       page-break-after:always;
+      break-after:page;
       animation:none;
     }
-    .page:last-of-type{page-break-after:auto;}
-    .page-header{border-bottom:2px solid #10b981;}
-    .page-num{background:#10b981;color:#fff;}
-    .page-title{color:#000;}
-    .page h2{color:#059669;}
-    .page p, .page ul li{color:#111;}
-    .page strong{color:#b45309;}
-    .ar-box{background:#f3f4f6;border:1px solid #ccc;}
-    .ar-box .ar{color:#059669;}
-    .ar-box .translit{color:#555;}
-    .ar-box .fr{color:#111;}
-    .letter{background:#f3f4f6;border:1px solid #ccc;}
-    .letter .ar{color:#059669;}
-    .letter .name{color:#555;}
-    .letter .sound{color:#b45309;}
-    th{background:#10b981;color:#fff;}
-    td{border-color:#ccc;}
-    td.ar{color:#b45309;}
-    .note{background:#ecfdf5;}
-    .warn{background:#fef2f2;}
-    .table-wrap{border:1px solid #ccc;}
+    .page:last-of-type{page-break-after:auto;break-after:auto;}
+
+    /* En-tête de chaque page */
+    .page-header{
+      border-bottom:2px solid #10b981 !important;
+      padding-bottom:8px;
+      margin-bottom:16px;
+    }
+    .page-num{
+      background:#10b981 !important;
+      color:#fff !important;
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+    }
+    .page-title{color:#000 !important;font-size:16pt;}
+
+    /* Titres internes */
+    .page h2{color:#059669 !important;font-size:13pt;margin:14px 0 8px;}
+    .page h2::before{color:#f59e0b !important;}
+    .page p{color:#111 !important;margin-bottom:8px;}
+    .page ul li{color:#222 !important;}
+    .page strong{color:#b45309 !important;}
+
+    /* Boîtes arabes */
+    .ar-box{
+      background:#f3f4f6 !important;
+      border:1px solid #d1d5db !important;
+      padding:14px;
+      margin:12px 0;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+    .ar-box .ar{
+      color:#059669 !important;
+      font-size:22pt;
+    }
+    .ar-box .translit{color:#555 !important;}
+    .ar-box .fr{color:#111 !important;}
+
+    /* Grilles de lettres */
+    .letters{
+      display:grid !important;
+      grid-template-columns:repeat(7,1fr) !important;
+      gap:6px;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+    .letter{
+      background:#f3f4f6 !important;
+      border:1px solid #d1d5db !important;
+      padding:8px 4px;
+    }
+    .letter .ar{color:#059669 !important;font-size:16pt;}
+    .letter .name{color:#555 !important;font-size:8pt;}
+    .letter .sound{color:#b45309 !important;font-size:7.5pt;}
+
+    /* Tableaux */
+    .table-wrap{
+      border:1px solid #d1d5db !important;
+      overflow:visible !important;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+    table{font-size:10pt !important;}
+    th{
+      background:#10b981 !important;
+      color:#fff !important;
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+      font-size:9pt;
+    }
+    td{border-color:#d1d5db !important;color:#111 !important;}
+    td.ar{color:#b45309 !important;font-size:14pt;}
+
+    /* Notes */
+    .note{
+      background:#ecfdf5 !important;
+      border-left:4px solid #10b981 !important;
+      color:#111 !important;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+    .note strong{color:#059669 !important;}
+    .warn{
+      background:#fef2f2 !important;
+      border-left:4px solid #ef4444 !important;
+      color:#111 !important;
+      page-break-inside:avoid;
+      break-inside:avoid;
+    }
+    .warn strong{color:#dc2626 !important;}
   }
 </style>
 </head>
@@ -508,8 +382,8 @@
       <div class="progress-bar" id="progressBar"></div>
     </div>
     <div class="page-indicator" id="pageIndicator">Page 1 / 10</div>
-    <button class="btn-pdf" id="pdfBtnHeader">
-      <span class="icon">⬇</span><span class="lbl">PDF</span>
+    <button class="btn-pdf" id="pdfBtnHeader" title="Télécharger en PDF">
+      <span>⬇</span><span class="lbl">PDF</span>
     </button>
   </nav>
 </header>
@@ -807,16 +681,14 @@
 
   <!-- ========== BLOC TÉLÉCHARGEMENT PDF ========== -->
   <div class="download-block">
-    <h3>📥 Télécharger le cours complet</h3>
-    <p>Obtenez les 10 pages dans un seul fichier PDF, prêt à imprimer ou à lire hors ligne.</p>
-    <div class="actions">
-      <button class="btn-download" id="pdfBtnMain">
-        <span>⬇</span> Télécharger en PDF
-      </button>
-      <button class="btn-print" id="printBtn">
-        <span>🖨</span> Imprimer / Enregistrer en PDF
-      </button>
-    </div>
+    <h3>📥 Télécharger le cours en PDF</h3>
+    <p>Les 10 pages du cours dans un seul fichier PDF, prêt à imprimer ou à lire hors ligne.</p>
+    <button class="btn-download" id="pdfBtnMain">
+      <span>⬇</span> Télécharger en PDF
+    </button>
+    <p class="hint">
+      Une fenêtre va s'ouvrir. Choisissez <strong>« Enregistrer au format PDF »</strong> comme destination, puis cliquez sur <strong>Enregistrer</strong>.
+    </p>
   </div>
 
 </main>
@@ -827,17 +699,8 @@
   <p style="font-size:.78rem;opacity:.7;">© 2026 — Document pédagogique.</p>
 </footer>
 
-<!-- OVERLAY DE CHARGEMENT -->
-<div class="overlay" id="overlay">
-  <div class="spinner"></div>
-  <p id="statusText">Génération du PDF en cours…</p>
-</div>
-
-<!-- CONTENU PDF CACHÉ -->
-<div id="pdfContent" aria-hidden="true"></div>
-
 <script>
-  /* ================= NAVIGATION ================= */
+  /* ================= NAVIGATION ENTRE PAGES ================= */
   const pages = document.querySelectorAll('.page');
   const total = pages.length;
   const dotsContainer = document.getElementById('dots');
@@ -880,132 +743,32 @@
 
   goTo(1);
 
-  /* ================= GÉNÉRATION PDF ================= */
-  const overlay = document.getElementById('overlay');
-  const statusText = document.getElementById('statusText');
-  const pdfContent = document.getElementById('pdfContent');
-  const pdfBtnHeader = document.getElementById('pdfBtnHeader');
-  const pdfBtnMain = document.getElementById('pdfBtnMain');
-  const printBtn = document.getElementById('printBtn');
-
-  function buildPdfContent() {
-    pdfContent.innerHTML = '';
-    pages.forEach((page) => {
-      const clone = page.cloneNode(true);
-      clone.classList.remove('page', 'active');
-      clone.classList.add('pdf-page');
-
-      const header = clone.querySelector('.page-header');
-      if (header) {
-        header.className = 'pdf-page-header';
-        const num = header.querySelector('.page-num');
-        if (num) num.className = 'pdf-page-num';
-        const title = header.querySelector('.page-title');
-        if (title) title.className = 'pdf-page-title';
-      }
-
-      const navBtns = clone.querySelector('.nav-buttons');
-      if (navBtns) navBtns.remove();
-
-      const footer = document.createElement('div');
-      footer.className = 'pdf-footer';
-      footer.textContent = "Cours d'arabe — Page " + (clone.dataset.page || '') + ' / 10';
-      clone.appendChild(footer);
-
-      pdfContent.appendChild(clone);
+  /* ================= TÉLÉCHARGEMENT PDF (via impression) ================= */
+  function printAllPages() {
+    // Affiche toutes les pages AVANT l'impression
+    pages.forEach(p => {
+      p.classList.add('active');
+      p.style.display = 'block';
     });
-  }
 
-  async function openPdfInNewTab() {
-    pdfBtnHeader.disabled = true;
-    pdfBtnMain.disabled = true;
-    overlay.classList.add('show');
-    statusText.textContent = 'Préparation du document…';
-
-    try {
-      if (document.fonts && document.fonts.ready) {
-        await document.fonts.ready;
-      }
-
-      buildPdfContent();
-
-      pdfContent.style.position = 'fixed';
-      pdfContent.style.left = '0';
-      pdfContent.style.top = '0';
-      pdfContent.style.zIndex = '-1';
-      pdfContent.style.opacity = '0.01';
-
-      await new Promise(r => setTimeout(r, 200));
-
-      statusText.textContent = 'Génération du PDF…';
-
-      const opt = {
-        margin: 0,
-        filename: 'cours-arabe-10-pages.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: '#ffffff',
-          windowWidth: 794
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'], avoid: '.ar-box, table, .letters, .note, .warn' }
-      };
-
-      // Générer le blob
-      const pdfBlob = await html2pdf().set(opt).from(pdfContent).outputPdf('blob');
-      const url = URL.createObjectURL(pdfBlob);
-
-      // Ouvrir dans un nouvel onglet (visible immédiatement)
-      const newTab = window.open(url, '_blank');
-
-      if (!newTab) {
-        // Si le popup est bloqué → forcer le téléchargement
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'cours-arabe-10-pages.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        statusText.textContent = 'Popup bloqué → téléchargement forcé ✓';
-      } else {
-        statusText.textContent = 'PDF ouvert dans un nouvel onglet ✓';
-      }
-
-      setTimeout(() => {
-        overlay.classList.remove('show');
-        pdfContent.style.left = '-9999px';
-        pdfContent.style.position = 'absolute';
-        pdfContent.style.opacity = '0';
-        pdfContent.innerHTML = '';
-      }, 1200);
-
-    } catch (err) {
-      console.error(err);
-      statusText.textContent = 'Erreur : ' + err.message + ' — Essayez le bouton Imprimer.';
-      setTimeout(() => overlay.classList.remove('show'), 3500);
-    } finally {
-      pdfBtnHeader.disabled = false;
-      pdfBtnMain.disabled = false;
-    }
-  }
-
-  pdfBtnHeader.addEventListener('click', openPdfInNewTab);
-  pdfBtnMain.addEventListener('click', openPdfInNewTab);
-
-  /* ================= IMPRESSION (fallback) ================= */
-  printBtn.addEventListener('click', () => {
-    // Affiche toutes les pages temporairement pour l'impression
-    pages.forEach(p => p.style.display = 'block');
-    window.print();
-    // Restaure l'affichage après impression
+    // Petit délai pour laisser le navigateur rendre les pages
     setTimeout(() => {
-      pages.forEach(p => p.style.display = '');
-      goTo(current);
-    }, 300);
-  });
+      window.print();
+
+      // Après fermeture de la boîte d'impression, restaurer l'état normal
+      setTimeout(() => {
+        pages.forEach(p => {
+          p.style.display = '';
+          p.classList.remove('active');
+        });
+        goTo(current);
+      }, 500);
+    }, 100);
+  }
+
+  document.getElementById('pdfBtnHeader').addEventListener('click', printAllPages);
+  document.getElementById('pdfBtnMain').addEventListener('click', printAllPages);
 </script>
 
 </body>
-  </html>
+        </html>
