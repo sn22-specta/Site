@@ -1,774 +1,484 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apprendre à lire l'arabe — Cours en 10 pages</title>
-<meta name="description" content="Cours complet pour apprendre à lire l'arabe en 10 pages numérotées. Téléchargeable en PDF via l'impression.">
-<style>
-  :root{
-    --bg:#0f172a;
-    --bg-alt:#1e293b;
-    --card:#1e293b;
-    --card-hover:#273449;
-    --text:#e2e8f0;
-    --text-muted:#94a3b8;
-    --accent:#10b981;
-    --accent-2:#14b8a6;
-    --gold:#f59e0b;
-    --red:#ef4444;
-    --border:#334155;
-    --radius:14px;
-    --shadow:0 10px 30px rgba(0,0,0,.35);
-    --font:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
-    --font-ar:'Amiri','Traditional Arabic','Scheherazade New',serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    font-family:var(--font);
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.75;
-    font-size:16px;
-  }
-  a{color:var(--accent);text-decoration:none;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Robot IA - Connecté</title>
+    <style>
+        /* --- RESET ET FOND --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #e0e0e0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent; 
+            touch-action: none; 
+            perspective: 1000px; 
+        }
 
-  /* HEADER */
-  header{
-    position:sticky;top:0;z-index:100;
-    background:rgba(15,23,42,.95);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav{
-    max-width:1100px;margin:0 auto;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:12px 20px;gap:14px;flex-wrap:wrap;
-  }
-  .logo{
-    display:flex;align-items:center;gap:10px;
-    font-weight:700;font-size:1.05rem;
-  }
-  .logo .ar{font-family:var(--font-ar);font-size:1.5rem;color:var(--accent);line-height:1;}
-  .progress-wrap{
-    flex:1;max-width:280px;
-    background:var(--bg-alt);border:1px solid var(--border);
-    border-radius:20px;height:8px;overflow:hidden;
-  }
-  .progress-bar{
-    height:100%;width:10%;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2));
-    transition:width .4s ease;
-  }
-  .page-indicator{
-    font-size:.85rem;color:var(--text-muted);
-    font-weight:600;white-space:nowrap;
-  }
-  .btn-pdf{
-    background:linear-gradient(135deg,var(--gold),#d97706);
-    color:#0f172a;border:none;border-radius:10px;
-    padding:10px 18px;font-size:.9rem;font-weight:700;
-    cursor:pointer;font-family:var(--font);
-    display:inline-flex;align-items:center;gap:8px;
-    transition:transform .2s;
-    white-space:nowrap;
-  }
-  .btn-pdf:hover{transform:translateY(-2px);}
+        /* --- UI DE CHAT (En bas) --- */
+        .chat-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
 
-  /* CONTAINER */
-  .container{max-width:900px;margin:0 auto;padding:30px 20px 60px;}
+        .chat-input {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
 
-  /* PAGE */
-  .page{
-    display:none;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:36px 34px;
-    box-shadow:var(--shadow);
-    animation:fadeIn .4s ease;
-  }
-  .page.active{display:block;}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(15px);}to{opacity:1;transform:none;}}
-  .page-header{
-    display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:22px;padding-bottom:16px;
-    border-bottom:2px solid var(--border);
-    flex-wrap:wrap;gap:12px;
-  }
-  .page-num{
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    color:#0f172a;font-weight:800;
-    padding:6px 16px;border-radius:20px;
-    font-size:.85rem;letter-spacing:.5px;
-  }
-  .page-title{
-    font-size:clamp(1.3rem,3vw,1.7rem);
-    font-weight:800;color:var(--text);flex:1;text-align:right;
-  }
-  .page h2{
-    font-size:1.25rem;margin:26px 0 12px;color:var(--accent);
-    display:flex;align-items:center;gap:10px;
-  }
-  .page h2::before{content:'◆';color:var(--gold);font-size:.9rem;}
-  .page p{color:var(--text);margin-bottom:14px;}
-  .page ul{margin:12px 0 18px 22px;}
-  .page ul li{color:var(--text-muted);margin-bottom:8px;}
-  .page strong{color:var(--gold);}
+        .chat-input:focus {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            background-color: #fff;
+        }
 
-  /* ARABIC BOX */
-  .ar-box{
-    background:var(--bg);border:1px solid var(--border);
-    border-radius:12px;padding:22px;margin:18px 0;text-align:center;
-  }
-  .ar-box .ar{
-    font-family:var(--font-ar);
-    font-size:clamp(2rem,6vw,3rem);
-    color:var(--accent);line-height:1.6;direction:rtl;
-  }
-  .ar-box .translit{color:var(--text-muted);font-size:.9rem;margin-top:10px;font-style:italic;}
-  .ar-box .fr{color:var(--text);font-size:.95rem;margin-top:6px;}
+        .chat-btn {
+            padding: 0 20px;
+            border-radius: 30px;
+            border: none;
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-  /* LETTER GRID */
-  .letters{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
-    gap:12px;margin:20px 0;
-  }
-  .letter{
-    background:var(--bg);border:1px solid var(--border);
-    border-radius:10px;padding:14px 8px;text-align:center;
-    transition:transform .2s,border-color .2s;
-  }
-  .letter:hover{transform:translateY(-4px);border-color:var(--accent);background:var(--card-hover);}
-  .letter .ar{font-family:var(--font-ar);font-size:2rem;color:var(--accent);display:block;line-height:1.2;}
-  .letter .name{font-size:.78rem;color:var(--text-muted);margin-top:6px;display:block;}
-  .letter .sound{font-size:.72rem;color:var(--gold);display:block;}
+        .chat-btn:active { transform: scale(0.95); }
+        .chat-btn:disabled { background-color: #999; cursor: not-allowed; }
 
-  /* TABLE */
-  .table-wrap{overflow-x:auto;margin:18px 0;border-radius:10px;border:1px solid var(--border);}
-  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:480px;}
-  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
-  th{background:var(--bg-alt);color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;}
-  tbody tr:last-child td{border-bottom:none;}
-  td.ar{font-family:var(--font-ar);font-size:1.3rem;color:var(--gold);text-align:center;}
+        /* --- BULLE DE DIALOGUE DU ROBOT --- */
+        .speech-bubble {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            background-color: #fff;
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            white-space: nowrap;
+            z-index: 200;
+            pointer-events: none;
+        }
 
-  /* NOTE */
-  .note{
-    background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(20,184,166,.05));
-    border-left:4px solid var(--accent);border-radius:8px;
-    padding:16px 18px;margin:18px 0;font-size:.95rem;
-  }
-  .note strong{color:var(--accent);}
-  .warn{
-    background:rgba(239,68,68,.08);
-    border-left:4px solid var(--red);border-radius:8px;
-    padding:16px 18px;margin:18px 0;font-size:.95rem;
-  }
-  .warn strong{color:var(--red);}
+        /* Petite flèche de la bulle */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #fff transparent transparent transparent;
+        }
 
-  /* NAVIGATION */
-  .nav-buttons{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-top:32px;padding-top:22px;
-    border-top:1px solid var(--border);gap:12px;flex-wrap:wrap;
-  }
-  .btn{
-    background:var(--accent);color:#0f172a;
-    border:none;border-radius:10px;
-    padding:12px 24px;font-size:.95rem;font-weight:700;
-    cursor:pointer;transition:transform .2s,background .2s,opacity .2s;
-    font-family:var(--font);
-  }
-  .btn:hover{background:var(--accent-2);transform:translateY(-2px);}
-  .btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
-  .btn.secondary{background:transparent;color:var(--accent);border:1px solid var(--accent);}
-  .btn.secondary:hover{background:rgba(16,185,129,.1);}
+        .speech-bubble.show {
+            transform: translateX(-50%) scale(1);
+        }
 
-  /* DOTS */
-  .dots{display:flex;justify-content:center;gap:8px;margin:26px 0;flex-wrap:wrap;}
-  .dot{
-    width:34px;height:34px;border-radius:50%;
-    background:var(--bg-alt);border:1px solid var(--border);
-    color:var(--text-muted);font-size:.82rem;font-weight:700;
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;transition:all .2s;font-family:var(--font);
-  }
-  .dot:hover{border-color:var(--accent);color:var(--accent);}
-  .dot.active{
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    color:#0f172a;border-color:var(--accent);transform:scale(1.1);
-  }
-  .dot.done{background:rgba(16,185,129,.2);color:var(--accent);border-color:var(--accent);}
+        /* --- LE RECTANGLE NOIR --- */
+        .rectangle-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 440px; 
+            height: 240px;
+            background-color: #050505;
+            border-radius: 70px; 
+            box-shadow: 0px 15px 25px rgba(0,0,0,0.4), inset 0px 0px 25px rgba(0,0,0,1);
+            overflow: hidden;
+            cursor: grab; 
+            transform-style: preserve-3d;
+        }
 
-  /* BLOC TÉLÉCHARGEMENT */
-  .download-block{
-    background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(16,185,129,.05));
-    border:1px solid var(--border);
-    border-left:4px solid var(--gold);
-    border-radius:var(--radius);
-    padding:26px;margin:40px 0 20px;text-align:center;
-  }
-  .download-block h3{color:var(--gold);font-size:1.2rem;margin-bottom:10px;}
-  .download-block p{color:var(--text-muted);font-size:.92rem;margin-bottom:18px;}
-  .btn-download{
-    background:linear-gradient(135deg,var(--gold),#d97706);
-    color:#0f172a;border:none;border-radius:10px;
-    padding:16px 32px;font-size:1rem;font-weight:800;
-    cursor:pointer;font-family:var(--font);
-    display:inline-flex;align-items:center;gap:10px;
-    transition:transform .2s;
-    box-shadow:0 6px 18px rgba(245,158,11,.3);
-  }
-  .btn-download:hover{transform:translateY(-3px);}
-  .download-block .hint{
-    font-size:.82rem;color:var(--text-muted);
-    margin-top:14px;line-height:1.6;
-  }
-  .download-block .hint strong{color:var(--accent);}
+        .rectangle-screen:active { cursor: grabbing; }
 
-  /* FOOTER */
-  footer{
-    background:var(--bg-alt);border-top:1px solid var(--border);
-    padding:30px 20px;text-align:center;
-    color:var(--text-muted);font-size:.88rem;
-  }
-  footer .ar{
-    font-family:var(--font-ar);font-size:1.5rem;
-    color:var(--accent);display:block;margin-bottom:10px;
-  }
+        .face-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px; 
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
 
-  @media(max-width:600px){
-    .page{padding:26px 20px;}
-    .page-title{font-size:1.1rem;text-align:left;width:100%;}
-    .nav-buttons{flex-direction:column;}
-    .btn{width:100%;}
-    .dot{width:30px;height:30px;font-size:.75rem;}
-    .btn-pdf .lbl{display:none;}
-  }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
 
-  /* ============ IMPRESSION / PDF ============ */
-  @media print{
-    @page{size:A4;margin:14mm;}
+        .rectangle-screen::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 30px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.08), transparent);
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 50;
+        }
 
-    /* Masquer les éléments non imprimables */
-    header, footer, .dots, .nav-buttons, .download-block, .btn-pdf{display:none !important;}
+        .eye-area {
+            width: 170px; 
+            height: 170px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden; 
+            pointer-events: none; 
+            transform-style: preserve-3d;
+            animation: breathe 3.5s ease-in-out infinite;
+        }
+        .eye-area:nth-child(2) { animation-delay: 0.2s; }
 
-    /* Fond blanc et texte noir */
-    body,html{
-      background:#fff !important;
-      color:#000 !important;
-      font-size:11pt;
-    }
-    .container{max-width:100%;padding:0;}
+        .eye-inner {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    /* Afficher TOUTES les pages */
-    .page{
-      display:block !important;
-      background:#fff !important;
-      color:#000 !important;
-      border:none !important;
-      box-shadow:none !important;
-      border-radius:0 !important;
-      padding:0 !important;
-      margin:0 !important;
-      page-break-after:always;
-      break-after:page;
-      animation:none;
-    }
-    .page:last-of-type{page-break-after:auto;break-after:auto;}
+        .eye-ball {
+            width: 140px; 
+            height: 140px;
+            background-color: #e6e6e6;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 1;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+        }
 
-    /* En-tête de chaque page */
-    .page-header{
-      border-bottom:2px solid #10b981 !important;
-      padding-bottom:8px;
-      margin-bottom:16px;
-    }
-    .page-num{
-      background:#10b981 !important;
-      color:#fff !important;
-      -webkit-print-color-adjust:exact;
-      print-color-adjust:exact;
-    }
-    .page-title{color:#000 !important;font-size:16pt;}
+        .pupil {
+            width: 85px; 
+            height: 85px;
+            background-color: #b3ff00; 
+            border-radius: 50%;
+            box-shadow: inset -4px -4px 10px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+            transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s, clip-path 0.3s, transform 0.1s;
+        }
 
-    /* Titres internes */
-    .page h2{color:#059669 !important;font-size:13pt;margin:14px 0 8px;}
-    .page h2::before{color:#f59e0b !important;}
-    .page p{color:#111 !important;margin-bottom:8px;}
-    .page ul li{color:#222 !important;}
-    .page strong{color:#b45309 !important;}
+        .hover-attentive .pupil { width: 95px; height: 95px; }
 
-    /* Boîtes arabes */
-    .ar-box{
-      background:#f3f4f6 !important;
-      border:1px solid #d1d5db !important;
-      padding:14px;
-      margin:12px 0;
-      page-break-inside:avoid;
-      break-inside:avoid;
-    }
-    .ar-box .ar{
-      color:#059669 !important;
-      font-size:22pt;
-    }
-    .ar-box .translit{color:#555 !important;}
-    .ar-box .fr{color:#111 !important;}
+        .eyelid {
+            position: absolute;
+            background: linear-gradient(to bottom, #333333, #0a0a0a);
+            width: 200%; 
+            height: 150%; 
+            border-radius: 50%; 
+            z-index: 10;
+            transition: top 0.15s ease-in-out;
+            box-shadow: 0px 8px 15px rgba(0,0,0,0.6);
+        }
 
-    /* Grilles de lettres */
-    .letters{
-      display:grid !important;
-      grid-template-columns:repeat(7,1fr) !important;
-      gap:6px;
-      page-break-inside:avoid;
-      break-inside:avoid;
-    }
-    .letter{
-      background:#f3f4f6 !important;
-      border:1px solid #d1d5db !important;
-      padding:8px 4px;
-    }
-    .letter .ar{color:#059669 !important;font-size:16pt;}
-    .letter .name{color:#555 !important;font-size:8pt;}
-    .letter .sound{color:#b45309 !important;font-size:7.5pt;}
+        .lid-top { top: -95%; left: -50%; transform-origin: center; }
 
-    /* Tableaux */
-    .table-wrap{
-      border:1px solid #d1d5db !important;
-      overflow:visible !important;
-      page-break-inside:avoid;
-      break-inside:avoid;
-    }
-    table{font-size:10pt !important;}
-    th{
-      background:#10b981 !important;
-      color:#fff !important;
-      -webkit-print-color-adjust:exact;
-      print-color-adjust:exact;
-      font-size:9pt;
-    }
-    td{border-color:#d1d5db !important;color:#111 !important;}
-    td.ar{color:#b45309 !important;font-size:14pt;}
+        .blush {
+            position: absolute; width: 50px; height: 25px;
+            background: radial-gradient(ellipse, rgba(255, 80, 120, 0.7) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(3px); opacity: 0;
+            transition: opacity 0.3s ease; z-index: 3; bottom: 0px;
+        }
+        .blush.left { left: -10px; }
+        .blush.right { right: -10px; }
+        .show-blush .blush { opacity: 1; }
 
-    /* Notes */
-    .note{
-      background:#ecfdf5 !important;
-      border-left:4px solid #10b981 !important;
-      color:#111 !important;
-      page-break-inside:avoid;
-      break-inside:avoid;
-    }
-    .note strong{color:#059669 !important;}
-    .warn{
-      background:#fef2f2 !important;
-      border-left:4px solid #ef4444 !important;
-      color:#111 !important;
-      page-break-inside:avoid;
-      break-inside:avoid;
-    }
-    .warn strong{color:#dc2626 !important;}
-  }
-</style>
+        /* Sharingan */
+        .sharingan { width: 100%; height: 100%; border-radius: 50%; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.3s ease; z-index: 5; animation: spin 4s linear infinite; }
+        .sharingan-bg { width: 100%; height: 100%; background-color: #d40000; border-radius: 50%; }
+        .sharingan::before { content: ''; position: absolute; top: 5%; left: 5%; width: 90%; height: 90%; border: 4px solid #000; border-radius: 50%; box-sizing: border-box; }
+        .sharingan::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 25%; height: 25%; background-color: #000; border-radius: 50%; }
+        .tomoe { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); }
+        .tomoe::before, .tomoe::after, .tomoe-div { content: ''; position: absolute; width: 18px; height: 18px; background-color: #000; border-radius: 50% 0 50% 50%; top: 10%; left: 50%; transform-origin: 0% 400%; }
+        .tomoe::before { transform: rotate(0deg) translate(-50%, 0); }
+        .tomoe::after { transform: rotate(120deg) translate(-50%, 0); }
+        .tomoe-div { transform: rotate(240deg) translate(-50%, 0); }
+
+        /* États */
+        .state-normal .lid-top { top: -95%; }
+        .state-happy .lid-top { top: -75%; }
+        .state-sleepy .lid-top { top: -20%; } 
+        .state-sharingan .sharingan { opacity: 1; }
+        .state-sharingan .lid-top { top: -90%; }
+        .state-angry .lid-top { top: -75%; transform: rotate(15deg); }
+        .state-angry .pupil { background-color: #ff3333; }
+
+        .state-love .pupil { background-color: transparent; box-shadow: none; display: flex; justify-content: center; align-items: center; animation: heartbeat 0.8s infinite alternate; }
+        .state-love .pupil::before, .state-love .pupil::after { content: ''; position: absolute; width: 40px; height: 65px; background: #ff3366; border-radius: 40px 40px 0 0; box-shadow: 0 0 20px #ff3366; }
+        .state-love .pupil::before { left: 42px; transform: rotate(-45deg); transform-origin: 0 100%; }
+        .state-love .pupil::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+
+        .state-dizzy .pupil { animation: dizzySpin 0.4s linear infinite; background-color: #ffaa00; }
+        .state-dizzy .lid-top { animation: flutter 0.1s infinite alternate; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes heartbeat { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+        @keyframes dizzySpin { 0% { transform: translate(0, 0) rotate(0deg); } 50% { transform: translate(10px, -5px) rotate(180deg); } 100% { transform: translate(0, 0) rotate(360deg); } }
+        @keyframes flutter { 0% { top: -95%; } 100% { top: -80%; } }
+        
+        @media (max-width: 480px) {
+            .rectangle-screen { transform: translate(-50%, -50%) scale(0.8); }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <nav class="nav">
-    <div class="logo">
-      <span class="ar">ا</span>
-      <span>Cours d'arabe</span>
+    <!-- Zone de Chat -->
+    <div class="chat-container">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Dis quelque chose au robot..." autocomplete="off">
+        <button id="sendBtn" class="chat-btn">Envoyer</button>
     </div>
-    <div class="progress-wrap" aria-label="Progression">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div class="page-indicator" id="pageIndicator">Page 1 / 10</div>
-    <button class="btn-pdf" id="pdfBtnHeader" title="Télécharger en PDF">
-      <span>⬇</span><span class="lbl">PDF</span>
-    </button>
-  </nav>
-</header>
 
-<main class="container" id="siteContent">
+    <!-- Le Robot -->
+    <div class="rectangle-screen state-normal" id="robot">
+        <div class="speech-bubble" id="speechBubble">Bonjour !</div>
+        
+        <div class="face-content" id="faceContent">
+            <div class="eye-area">
+                <div class="eye-inner">
+                    <div class="eye-ball">
+                        <div class="blush left"></div>
+                        <div class="pupil" id="pupil-left">
+                            <div class="sharingan"><div class="sharingan-bg"></div><div class="tomoe"><div class="tomoe-div"></div></div></div>
+                        </div>
+                    </div>
+                    <div class="eyelid lid-top" id="lid-left"></div>
+                </div>
+            </div>
+            
+            <div class="eye-area">
+                <div class="eye-inner">
+                    <div class="eye-ball">
+                        <div class="blush right"></div>
+                        <div class="pupil" id="pupil-right">
+                            <div class="sharingan"><div class="sharingan-bg"></div><div class="tomoe"><div class="tomoe-div"></div></div></div>
+                        </div>
+                    </div>
+                    <div class="eyelid lid-top" id="lid-right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <!-- ========== PAGE 1 ========== -->
-  <section class="page active" data-page="1">
-    <div class="page-header">
-      <span class="page-num">PAGE 1</span>
-      <h1 class="page-title">L'alphabet arabe — vue d'ensemble</h1>
-    </div>
-    <p>L'arabe s'écrit et se lit <strong>de droite à gauche</strong>. L'alphabet compte <strong>28 lettres</strong>, toutes considérées comme des consonnes. Les voyelles courtes sont indiquées par des signes placés au-dessus ou en dessous des lettres.</p>
-    <div class="ar-box">
-      <div class="ar">ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي</div>
-      <div class="translit">ʾa bā tā ṯā ǧīm ḥā ḫā dāl ḏāl rā zāy sīn šīn ṣād ḍād ṭā ẓā ʿayn ġayn fā qāf kāf lām mīm nūn hā wāw yā</div>
-    </div>
-    <h2>Les 3 règles fondamentales</h2>
-    <ul>
-      <li><strong>Sens de lecture :</strong> de droite à gauche, de haut en bas.</li>
-      <li><strong>Pas de majuscules :</strong> toutes les lettres ont la même forme de base.</li>
-      <li><strong>Contexte :</strong> une lettre change de forme selon sa position dans le mot.</li>
-    </ul>
-    <div class="note"><strong>À retenir :</strong> avant d'apprendre les formes contextuelles, apprenez d'abord les 28 lettres à l'état <em>isolé</em>.</div>
-    <div class="nav-buttons">
-      <button class="btn secondary" disabled>← Précédent</button>
-      <button class="btn" onclick="goTo(2)">Suivant →</button>
-    </div>
-  </section>
+    <script>
+        // ==========================================
+        // CONFIGURATION DE L'IA (À MODIFIER)
+        // ==========================================
+        // Mets ta clé API OpenAI ici (attention, ne publie jamais ce code avec la clé !)
+        const OPENAI_API_KEY = "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"; 
+        const USE_SIMULATION = true; // Passe à FALSE si tu as mis ta vraie clé API
 
-  <!-- ========== PAGE 2 ========== -->
-  <section class="page" data-page="2">
-    <div class="page-header">
-      <span class="page-num">PAGE 2</span>
-      <h1 class="page-title">Les lettres 1 à 14</h1>
-    </div>
-    <p>Voici la première moitié de l'alphabet avec le <strong>nom</strong> et le <strong>son</strong> de chaque lettre.</p>
-    <div class="letters">
-      <div class="letter"><span class="ar">ا</span><span class="name">alif</span><span class="sound">a / ā</span></div>
-      <div class="letter"><span class="ar">ب</span><span class="name">bā</span><span class="sound">b</span></div>
-      <div class="letter"><span class="ar">ت</span><span class="name">tā</span><span class="sound">t</span></div>
-      <div class="letter"><span class="ar">ث</span><span class="name">thā</span><span class="sound">th</span></div>
-      <div class="letter"><span class="ar">ج</span><span class="name">jīm</span><span class="sound">j</span></div>
-      <div class="letter"><span class="ar">ح</span><span class="name">ḥā</span><span class="sound">ḥ</span></div>
-      <div class="letter"><span class="ar">خ</span><span class="name">khā</span><span class="sound">kh</span></div>
-      <div class="letter"><span class="ar">د</span><span class="name">dāl</span><span class="sound">d</span></div>
-      <div class="letter"><span class="ar">ذ</span><span class="name">dhāl</span><span class="sound">dh</span></div>
-      <div class="letter"><span class="ar">ر</span><span class="name">rā</span><span class="sound">r</span></div>
-      <div class="letter"><span class="ar">ز</span><span class="name">zāy</span><span class="sound">z</span></div>
-      <div class="letter"><span class="ar">س</span><span class="name">sīn</span><span class="sound">s</span></div>
-      <div class="letter"><span class="ar">ش</span><span class="name">shīn</span><span class="sound">sh</span></div>
-      <div class="letter"><span class="ar">ص</span><span class="name">ṣād</span><span class="sound">ṣ</span></div>
-    </div>
-    <h2>Astuce mémoire</h2>
-    <p>Regroupez les lettres par <strong>forme similaire</strong> : <span style="font-family:var(--font-ar);font-size:1.3rem;color:var(--gold);">ب ت ث</span> ne diffèrent que par les points.</p>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(1)">← Précédent</button>
-      <button class="btn" onclick="goTo(3)">Suivant →</button>
-    </div>
-  </section>
+        const robot = document.getElementById('robot');
+        const faceContent = document.getElementById('faceContent');
+        const speechBubble = document.getElementById('speechBubble');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        
+        // ... (Le reste des variables d'animation existantes) ...
+        const pupils = document.querySelectorAll('.pupil');
+        const eyeBalls = document.querySelectorAll('.eye-ball');
+        const lids = document.querySelectorAll('.lid-top');
+        
+        let pointerX = window.innerWidth / 2;
+        let pointerY = window.innerHeight / 2;
+        let currentX = 0, currentY = 0, saccadeX = 0, saccadeY = 0;
+        let lastInteractionTime = Date.now();
+        let isSleeping = false, isDizzy = false, isSneezing = false;
+        let isDragging = false, hasMoved = false;
+        let dragStartX, dragStartY, initialRobotLeft, initialRobotTop;
 
-  <!-- ========== PAGE 3 ========== -->
-  <section class="page" data-page="3">
-    <div class="page-header">
-      <span class="page-num">PAGE 3</span>
-      <h1 class="page-title">Les lettres 15 à 28</h1>
-    </div>
-    <p>Deuxième moitié de l'alphabet. Une fois ces lettres maîtrisées, vous connaîtrez toutes les consonnes arabes.</p>
-    <div class="letters">
-      <div class="letter"><span class="ar">ض</span><span class="name">ḍād</span><span class="sound">ḍ</span></div>
-      <div class="letter"><span class="ar">ط</span><span class="name">ṭā</span><span class="sound">ṭ</span></div>
-      <div class="letter"><span class="ar">ظ</span><span class="name">ẓā</span><span class="sound">ẓ</span></div>
-      <div class="letter"><span class="ar">ع</span><span class="name">ʿayn</span><span class="sound">ʿ</span></div>
-      <div class="letter"><span class="ar">غ</span><span class="name">ghayn</span><span class="sound">gh</span></div>
-      <div class="letter"><span class="ar">ف</span><span class="name">fā</span><span class="sound">f</span></div>
-      <div class="letter"><span class="ar">ق</span><span class="name">qāf</span><span class="sound">q</span></div>
-      <div class="letter"><span class="ar">ك</span><span class="name">kāf</span><span class="sound">k</span></div>
-      <div class="letter"><span class="ar">ل</span><span class="name">lām</span><span class="sound">l</span></div>
-      <div class="letter"><span class="ar">م</span><span class="name">mīm</span><span class="sound">m</span></div>
-      <div class="letter"><span class="ar">ن</span><span class="name">nūn</span><span class="sound">n</span></div>
-      <div class="letter"><span class="ar">ه</span><span class="name">hā</span><span class="sound">h</span></div>
-      <div class="letter"><span class="ar">و</span><span class="name">wāw</span><span class="sound">w / ū</span></div>
-      <div class="letter"><span class="ar">ي</span><span class="name">yā</span><span class="sound">y / ī</span></div>
-    </div>
-    <div class="warn"><strong>Attention :</strong> les lettres <span style="font-family:var(--font-ar);color:var(--gold);">ع غ ح خ</span> viennent de la gorge. Elles n'existent pas en français — un audio natif est indispensable.</div>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(2)">← Précédent</button>
-      <button class="btn" onclick="goTo(4)">Suivant →</button>
-    </div>
-  </section>
+        // --- FONCTION DE DIALOGUE ---
+        function showBubble(text) {
+            speechBubble.textContent = text;
+            speechBubble.classList.add('show');
+            // La bulle disparaît après 5 secondes
+            setTimeout(() => {
+                speechBubble.classList.remove('show');
+            }, 5000);
+        }
 
-  <!-- ========== PAGE 4 ========== -->
-  <section class="page" data-page="4">
-    <div class="page-header">
-      <span class="page-num">PAGE 4</span>
-      <h1 class="page-title">Les voyelles courtes (ḥarakāt)</h1>
-    </div>
-    <p>Les consonnes seules ne suffisent pas : il faut les <strong>voyelles courtes</strong>, appelées <em>ḥarakāt</em>, placées au-dessus ou en dessous des lettres.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Signe</th><th>Nom</th><th>Son</th><th>Exemple</th></tr></thead>
-        <tbody>
-          <tr><td class="ar">بَ</td><td>Fatḥa</td><td>a court</td><td class="ar">بَ = ba</td></tr>
-          <tr><td class="ar">بِ</td><td>Kasra</td><td>i court</td><td class="ar">بِ = bi</td></tr>
-          <tr><td class="ar">بُ</td><td>Ḍamma</td><td>ou court</td><td class="ar">بُ = bou</td></tr>
-          <tr><td class="ar">بْ</td><td>Sukūn</td><td>absence de voyelle</td><td class="ar">بْ = b</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Les voyelles longues</h2>
-    <ul>
-      <li><span style="font-family:var(--font-ar);color:var(--gold);">بَا</span> = bā (a long)</li>
-      <li><span style="font-family:var(--font-ar);color:var(--gold);">بِي</span> = bī (i long)</li>
-      <li><span style="font-family:var(--font-ar);color:var(--gold);">بُو</span> = bū (ou long)</li>
-    </ul>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(3)">← Précédent</button>
-      <button class="btn" onclick="goTo(5)">Suivant →</button>
-    </div>
-  </section>
+        // --- FONCTION POUR CHANGER L'ÉMOTION ---
+        function setEmotion(emotion) {
+            // On retire tous les états
+            robot.className = 'rectangle-screen';
+            // On applique le nouvel état
+            robot.classList.add('state-' + emotion);
+            
+            if (emotion === 'happy' || emotion === 'love') {
+                robot.classList.add('show-blush');
+            }
+        }
 
-  <!-- ========== PAGE 5 ========== -->
-  <section class="page" data-page="5">
-    <div class="page-header">
-      <span class="page-num">PAGE 5</span>
-      <h1 class="page-title">Tanwīn, Shadda et Sukūn</h1>
-    </div>
-    <p>Trois signes complètent les voyelles et modifient la lecture.</p>
-    <h2>1. Le Tanwīn (doublement)</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Signe</th><th>Nom</th><th>Son</th></tr></thead>
-        <tbody>
-          <tr><td class="ar">بًا</td><td>Tanwīn fatḥ</td><td>ban</td></tr>
-          <tr><td class="ar">بٍ</td><td>Tanwīn kasr</td><td>bin</td></tr>
-          <tr><td class="ar">بٌ</td><td>Tanwīn ḍamm</td><td>boun</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>2. La Shadda (doublement de consonne)</h2>
-    <div class="ar-box"><div class="ar">بَّ</div><div class="translit">bba (consonne prononcée deux fois)</div></div>
-    <h2>3. Le Sukūn</h2>
-    <div class="ar-box"><div class="ar">مَنْ = man</div><div class="translit">m + a + n (le n est sans voyelle)</div></div>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(4)">← Précédent</button>
-      <button class="btn" onclick="goTo(6)">Suivant →</button>
-    </div>
-  </section>
+        // --- APPEL À L'API OPENAI ---
+        async function askAI(message) {
+            if (USE_SIMULATION) {
+                // Mode simulation (sans clé API, pour tester l'interface)
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        const responses = [
+                            { text: "Je suis un robot !", emotion: "normal" },
+                            { text: "Haha, c'est très drôle !", emotion: "happy" },
+                            { text: "Je commence à être fatigué...", emotion: "sleepy" },
+                            { text: "Tu me cherches ?!", emotion: "angry" },
+                            { text: "Oh, j'ai un peu tourné de l'œil...", emotion: "dizzy" },
+                            { text: "Je t'aime bien tu sais.", emotion: "love" }
+                        ];
+                        // Choisit une réponse aléatoire
+                        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                        resolve(randomResponse);
+                    }, 1000); // Fait semblant de réfléchir pendant 1s
+                });
+            }
 
-  <!-- ========== PAGE 6 ========== -->
-  <section class="page" data-page="6">
-    <div class="page-header">
-      <span class="page-num">PAGE 6</span>
-      <h1 class="page-title">Les formes contextuelles des lettres</h1>
-    </div>
-    <p>Une lettre arabe <strong>change de forme</strong> selon sa position dans le mot.</p>
-    <h2>Exemple avec la lettre ب</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Position</th><th>Forme</th><th>Exemple</th><th>Lecture</th></tr></thead>
-        <tbody>
-          <tr><td>Isolée</td><td class="ar">ب</td><td class="ar">ب</td><td>b</td></tr>
-          <tr><td>Initiale</td><td class="ar">بـ</td><td class="ar">بَاب</td><td>bāb (porte)</td></tr>
-          <tr><td>Médiane</td><td class="ar">ـبـ</td><td class="ar">كَبِير</td><td>kabīr (grand)</td></tr>
-          <tr><td>Finale</td><td class="ar">ـب</td><td class="ar">كِتَاب</td><td>kitāb (livre)</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="note"><strong>Bon à savoir :</strong> 6 lettres ne s'attachent <em>jamais</em> à la lettre suivante : <span style="font-family:var(--font-ar);color:var(--gold);font-size:1.2rem;">ا د ذ ر ز و</span>.</div>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(5)">← Précédent</button>
-      <button class="btn" onclick="goTo(7)">Suivant →</button>
-    </div>
-  </section>
+            // Vrai appel API (si USE_SIMULATION = false)
+            try {
+                const response = await fetch("https://api.openai.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${OPENAI_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-4o-mini", // Modèle rapide et pas cher
+                        messages: [
+                            { 
+                                role: "system", 
+                                content: "Tu es un petit robot mignon avec des yeux néons. Réponds de façon courte (max 10 mots). Tu dois obligatoirement renvoyer un objet JSON avec deux clés : 'text' (ta réponse) et 'emotion' (choisis parmi : normal, happy, sleepy, angry, love, dizzy, sharingan)." 
+                            },
+                            { role: "user", content: message }
+                        ],
+                        response_format: { type: "json_object" }
+                    })
+                });
 
-  <!-- ========== PAGE 7 ========== -->
-  <section class="page" data-page="7">
-    <div class="page-header">
-      <span class="page-num">PAGE 7</span>
-      <h1 class="page-title">Lire ses premiers mots</h1>
-    </div>
-    <p>Maintenant que vous connaissez les lettres et les voyelles, lisez ces mots courants.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Arabe</th><th>Translitération</th><th>Français</th></tr></thead>
-        <tbody>
-          <tr><td class="ar">بَاب</td><td>bāb</td><td>porte</td></tr>
-          <tr><td class="ar">كِتَاب</td><td>kitāb</td><td>livre</td></tr>
-          <tr><td class="ar">قَلَم</td><td>qalam</td><td>stylo</td></tr>
-          <tr><td class="ar">بَيْت</td><td>bayt</td><td>maison</td></tr>
-          <tr><td class="ar">مَاء</td><td>māʾ</td><td>eau</td></tr>
-          <tr><td class="ar">وَلَد</td><td>walad</td><td>garçon</td></tr>
-          <tr><td class="ar">بِنْت</td><td>bint</td><td>fille</td></tr>
-          <tr><td class="ar">شَمْس</td><td>shams</td><td>soleil</td></tr>
-          <tr><td class="ar">قَمَر</td><td>qamar</td><td>lune</td></tr>
-          <tr><td class="ar">مَدْرَسَة</td><td>madrasa</td><td>école</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(6)">← Précédent</button>
-      <button class="btn" onclick="goTo(8)">Suivant →</button>
-    </div>
-  </section>
+                const data = await response.json();
+                const aiResponse = JSON.parse(data.choices[0].message.content);
+                return aiResponse;
+                
+            } catch (error) {
+                console.error("Erreur API:", error);
+                return { text: "Je n'ai pas accès à internet...", emotion: "sleepy" };
+            }
+        }
 
-  <!-- ========== PAGE 8 ========== -->
-  <section class="page" data-page="8">
-    <div class="page-header">
-      <span class="page-num">PAGE 8</span>
-      <h1 class="page-title">Les mots-outils fréquents</h1>
-    </div>
-    <p>Ces petits mots reviennent constamment en arabe.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Arabe</th><th>Translitération</th><th>Français</th></tr></thead>
-        <tbody>
-          <tr><td class="ar">مِنْ</td><td>min</td><td>de / depuis</td></tr>
-          <tr><td class="ar">إِلَى</td><td>ilā</td><td>vers / à</td></tr>
-          <tr><td class="ar">فِي</td><td>fī</td><td>dans</td></tr>
-          <tr><td class="ar">عَلَى</td><td>ʿalā</td><td>sur</td></tr>
-          <tr><td class="ar">مَعَ</td><td>maʿa</td><td>avec</td></tr>
-          <tr><td class="ar">هَذَا</td><td>hādhā</td><td>ceci (masc.)</td></tr>
-          <tr><td class="ar">هَذِهِ</td><td>hādhihi</td><td>ceci (fém.)</td></tr>
-          <tr><td class="ar">وَ</td><td>wa</td><td>et</td></tr>
-          <tr><td class="ar">أَوْ</td><td>aw</td><td>ou</td></tr>
-          <tr><td class="ar">لَا</td><td>lā</td><td>non / ne pas</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(7)">← Précédent</button>
-      <button class="btn" onclick="goTo(9)">Suivant →</button>
-    </div>
-  </section>
+        // --- ENVOI DU MESSAGE ---
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
 
-  <!-- ========== PAGE 9 ========== -->
-  <section class="page" data-page="9">
-    <div class="page-header">
-      <span class="page-num">PAGE 9</span>
-      <h1 class="page-title">Lire une phrase complète</h1>
-    </div>
-    <p>Voici des phrases simples, entièrement vocalisées.</p>
-    <div class="ar-box"><div class="ar">هَذَا كِتَابٌ.</div><div class="translit">hādhā kitābun.</div><div class="fr">Ceci est un livre.</div></div>
-    <div class="ar-box"><div class="ar">الْبَيْتُ كَبِيرٌ.</div><div class="translit">al-baytu kabīrun.</div><div class="fr">La maison est grande.</div></div>
-    <div class="ar-box"><div class="ar">أَنَا أَقْرَأُ الْقُرْآنَ.</div><div class="translit">anā aqraʾu al-qurʾāna.</div><div class="fr">Je lis le Coran.</div></div>
-    <div class="ar-box"><div class="ar">الْوَلَدُ فِي الْمَدْرَسَةِ.</div><div class="translit">al-waladu fī al-madrasati.</div><div class="fr">Le garçon est à l'école.</div></div>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(8)">← Précédent</button>
-      <button class="btn" onclick="goTo(10)">Suivant →</button>
-    </div>
-  </section>
+            // Désactive l'input pendant la réflexion
+            chatInput.value = "";
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+            sendBtn.textContent = "...";
 
-  <!-- ========== PAGE 10 ========== -->
-  <section class="page" data-page="10">
-    <div class="page-header">
-      <span class="page-num">PAGE 10</span>
-      <h1 class="page-title">Pratique et ressources</h1>
-    </div>
-    <p>Félicitations ! Vous avez parcouru les 10 pages du cours.</p>
-    <h2>Plan d'entraînement en 30 jours</h2>
-    <ul>
-      <li><strong>Jours 1-7 :</strong> maîtriser les 28 lettres isolées.</li>
-      <li><strong>Jours 8-14 :</strong> voyelles, Sukūn, Shadda, Tanwīn.</li>
-      <li><strong>Jours 15-21 :</strong> formes contextuelles et lecture de mots.</li>
-      <li><strong>Jours 22-30 :</strong> mots-outils et phrases complètes.</li>
-    </ul>
-    <h2>Ressources recommandées</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Ressource</th><th>Usage</th><th>Gratuit ?</th></tr></thead>
-        <tbody>
-          <tr><td>Merkez Al Fahm</td><td>10 leçons vidéo courtes</td><td>Oui</td></tr>
-          <tr><td>Site inter-académique</td><td>Ressources Éducation nationale</td><td>Oui</td></tr>
-          <tr><td>Talamize</td><td>Parcours complet jusqu'au Coran</td><td>Non</td></tr>
-          <tr><td>Kaleela</td><td>App interface française</td><td>Partiel</td></tr>
-          <tr><td>AlifBee</td><td>200+ leçons, 10 niveaux</td><td>Partiel</td></tr>
-          <tr><td>Kalima</td><td>Reconnaissance d'écriture OCR</td><td>7 jours</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="note"><strong>Conseil final :</strong> lisez à voix haute 10 minutes par jour. La lecture arabe s'automatise par la répétition quotidienne.</div>
-    <div class="ar-box">
-      <div class="ar">بالتوفيق في تعلّمك!</div>
-      <div class="translit">bittawfīq fī taʿallumik !</div>
-      <div class="fr">Bonne chance dans ton apprentissage !</div>
-    </div>
-    <div class="nav-buttons">
-      <button class="btn secondary" onclick="goTo(9)">← Précédent</button>
-      <button class="btn" onclick="goTo(1)">↺ Recommencer</button>
-    </div>
-  </section>
+            // Le robot fait une tête de réflexion
+            setEmotion('thinking');
+            
+            // Demande à l'IA
+            const aiResponse = await askAI(message);
+            
+            // Affiche la réponse
+            showBubble(aiResponse.text);
+            setEmotion(aiResponse.emotion);
 
-  <!-- DOTS -->
-  <div class="dots" id="dots"></div>
+            // Réactive l'input
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            sendBtn.textContent = "Envoyer";
+            chatInput.focus();
+            
+            lastInteractionTime = Date.now();
+        }
 
-  <!-- ========== BLOC TÉLÉCHARGEMENT PDF ========== -->
-  <div class="download-block">
-    <h3>📥 Télécharger le cours en PDF</h3>
-    <p>Les 10 pages du cours dans un seul fichier PDF, prêt à imprimer ou à lire hors ligne.</p>
-    <button class="btn-download" id="pdfBtnMain">
-      <span>⬇</span> Télécharger en PDF
-    </button>
-    <p class="hint">
-      Une fenêtre va s'ouvrir. Choisissez <strong>« Enregistrer au format PDF »</strong> comme destination, puis cliquez sur <strong>Enregistrer</strong>.
-    </p>
-  </div>
-
-</main>
-
-<footer>
-  <span class="ar">اِقْرَأْ</span>
-  <p>Cours d'arabe en 10 pages numérotées — pour francophones débutants.</p>
-  <p style="font-size:.78rem;opacity:.7;">© 2026 — Document pédagogique.</p>
-</footer>
-
-<script>
-  /* ================= NAVIGATION ENTRE PAGES ================= */
-  const pages = document.querySelectorAll('.page');
-  const total = pages.length;
-  const dotsContainer = document.getElementById('dots');
-  const progressBar = document.getElementById('progressBar');
-  const pageIndicator = document.getElementById('pageIndicator');
-  let current = 1;
-
-  for (let i = 1; i <= total; i++) {
-    const dot = document.createElement('button');
-    dot.className = 'dot';
-    dot.textContent = i;
-    dot.setAttribute('aria-label', 'Aller à la page ' + i);
-    dot.addEventListener('click', () => goTo(i));
-    dotsContainer.appendChild(dot);
-  }
-
-  function goTo(n) {
-    if (n < 1 || n > total) return;
-    pages.forEach(p => p.classList.remove('active'));
-    const target = document.querySelector(`.page[data-page="${n}"]`);
-    if (target) target.classList.add('active');
-
-    const dots = dotsContainer.querySelectorAll('.dot');
-    dots.forEach((d, i) => {
-      d.classList.remove('active', 'done');
-      if (i + 1 === n) d.classList.add('active');
-      else if (i + 1 < n) d.classList.add('done');
-    });
-
-    progressBar.style.width = (n / total * 100) + '%';
-    pageIndicator.textContent = `Page ${n} / ${total}`;
-    current = n;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') goTo(current + 1);
-    if (e.key === 'ArrowLeft') goTo(current - 1);
-  });
-
-  goTo(1);
-
-  /* ================= TÉLÉCHARGEMENT PDF (via impression) ================= */
-  function printAllPages() {
-    // Affiche toutes les pages AVANT l'impression
-    pages.forEach(p => {
-      p.classList.add('active');
-      p.style.display = 'block';
-    });
-
-    // Petit délai pour laisser le navigateur rendre les pages
-    setTimeout(() => {
-      window.print();
-
-      // Après fermeture de la boîte d'impression, restaurer l'état normal
-      setTimeout(() => {
-        pages.forEach(p => {
-          p.style.display = '';
-          p.classList.remove('active');
+        // Écouteurs sur l'input
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
         });
-        goTo(current);
-      }, 500);
-    }, 100);
-  }
 
-  document.getElementById('pdfBtnHeader').addEventListener('click', printAllPages);
-  document.getElementById('pdfBtnMain').addEventListener('click', printAllPages);
-</script>
+        // --- (Le reste de ton code de drag & drop, respiration, etc. reste identique) ---
+        function animate() {
+            // Détection du sommeil (seulement si on ne tape pas)
+            if (Date.now() - lastInteractionTime > 10000 && !isSleeping && !document.activeElement === chatInput) {
+                isSleeping = true;
+                setEmotion('sleepy');
+                lids.forEach(lid => lid.style.top = '-20%'); 
+            }
 
+            eyeBalls.forEach((ball, index) => {
+                const rect = ball.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                let targetX = 0, targetY = 0;
+                const maxMove = 24; 
+
+                if (!isSleeping && !isDizzy) {
+                    if (document.activeElement === chatInput) {
+                        // Quand on tape, le robot regarde l'input
+                        targetX = -15; // Regarde en bas
+                        targetY = 15;
+                    } else {
+                        const deltaX = pointerX - centerX;
+                        const deltaY = pointerY - centerY;
+                        targetX = Math.max(-maxMove, Math.min(maxMove, deltaX / 15));
+                        targetY = Math.max(-maxMove, Math.min(maxMove, deltaY / 15));
+                    }
+                }
+
+                if (!isSleeping && !isDizzy && Math.random() < 0.05) {
+                    saccadeX = (Math.random() - 0.5) * 1.5; 
+                    saccadeY = (Math.random() - 0.5) * 1.5;
+                }
+
+                currentX += ((targetX + saccadeX) - currentX) * 0.15;
+                currentY += ((targetY + saccadeY) - currentY) * 0.15;
+
+                if (!robot.classList.contains('state-love') && !isDizzy) {
+                    pupils[index].style.transform = `translate(${currentX}px, ${currentY}px)`;
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
 </body>
-        </html>
+  </html>
